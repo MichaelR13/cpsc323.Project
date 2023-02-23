@@ -1,0 +1,45 @@
+// Build of a lexer
+// The lexer will be built entirely using a finite state machine
+// Build 2 small FSMs:
+     //Identifier (~10 states)
+     //Integer+Real 
+
+// MUST write the Regular Expressions for Identifiers, Real, and Integer
+// Also show NFSM using Thompson's construction (documentation)
+
+/* Program must read a file containing the source code of the language to generate tokens and write out the 
+   results to an output file. 
+*/
+// Print both, the tokens and lexemes
+
+/* Psuedo code below:
+     while not finished (i.e. not end of the source file) do
+          call the lexer for a token
+          print the token and lexeme
+     endwhile
+*/
+
+// 6 token types: keyword, separator, operator, identifier, integer, real
+
+/* Sample test case:
+
+INPUT: while  (fahr <= upper)   a = 23.00; endwhile  [* this is sample *]
+
+OUTPUT: 
+
+token           lexeme
+-----           ------
+keyword         while
+separator       (
+identifier      fahr
+operator        <=
+identifier      upper
+separator       )
+identifier      a
+operator        =
+real            23.00
+separator       ;
+keyword         endwhile
+*/
+
+// NOTE: Assignment 2 shows 28 rules, test those in the test cases
