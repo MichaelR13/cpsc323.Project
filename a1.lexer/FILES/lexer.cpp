@@ -52,3 +52,21 @@ keyword         endwhile
 
 using namespace std;
 
+
+int main()
+{
+     // Open the source code file
+
+     // while not finished (i.e. not end of the source file) do
+     //     call the lexer for a token
+     //     receive the token and lexeme from vectors in lexer
+     //     open the output file (output.txt)
+     //     print the token and lexeme to the output file
+     //     close the output file
+     
+     // end while
+
+     // Close the source code file
+
+     return 0;
+}
