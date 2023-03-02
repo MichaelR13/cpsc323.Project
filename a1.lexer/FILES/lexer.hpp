@@ -16,8 +16,18 @@
 using namespace std;
 
 // Make 2 finite state machines, one for the Identifier and one for Integer + Real
+int FSM_determiner(char input); // This function will determine which FSM to use
 
 // Finite State Machine for Identifiers
+int FSM_ID(int state, char input); // This function will return the next state of the FSM
+bool is_accepting_state_ID(int state); // This function will determine if the FSM is in an accepting state
+
+// Finite State Machine for Integers and Reals
+int FSM_IntReal(int state, char input); // This function will return the next state of the FSM
+bool is_accepting_state_IntReal(int state); // This function will determine if the FSM is in an accepting state
+
+// Find out the token type using the final state of the FSM
+string token_type(int state); // This function will return the token type
 
 // Start lexer function
 

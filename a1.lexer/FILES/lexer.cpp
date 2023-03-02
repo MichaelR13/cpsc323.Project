@@ -52,6 +52,11 @@ keyword         endwhile
 
 using namespace std;
 
+// Find which FSM to use given the input
+int FSM_determiner(char input)
+{
+     
+}
 
 int main()
 {
@@ -63,7 +68,7 @@ int main()
      //     open the output file (output.txt)
      //     print the token and lexeme to the output file
      //     close the output file
-     
+
      // end while
 
      // Close the source code file
