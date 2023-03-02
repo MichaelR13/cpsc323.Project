@@ -31,8 +31,16 @@ string token_type(int state); // This function will return the token type
 
 // Start lexer function
 
-void lexer(char* str)
+class tokenLexeme // This class will hold the token and lexeme
 {
-     // Objective: Tokenize the input string, store the lexemes and token types in vectors, 
-     // pass those vectors to main
-}
+    private:
+        string token;   // This will hold the token
+        string lexeme;  // This will hold the lexeme
+
+    public:
+        
+
+};
+
+tokenLexeme lexer(string input); // This function will return the token and lexeme to the main function
+
