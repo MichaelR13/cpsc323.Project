@@ -38,8 +38,34 @@ class tokenLexeme // This class will hold the token and lexeme
         string lexeme;  // This will hold the lexeme
 
     public:
-        
+        // constructor
+        tokenLexeme()
+        {
+            token = "null";
+            lexeme = "null";
+        }
 
+        // accessor functions
+        string getToken()
+        {
+            return token;
+        }
+
+        string getLexeme()
+        {
+            return lexeme;
+        }
+
+        // mutator functions
+        void setToken(string getToken)
+        {
+            token = getToken;
+        }
+        
+        void setLexeme(string getLexeme)
+        {
+            lexeme = getLexeme;
+        }
 };
 
 tokenLexeme lexer(string input); // This function will return the token and lexeme to the main function

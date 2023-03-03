@@ -55,8 +55,16 @@ using namespace std;
 // Find which FSM to use given the input
 int FSM_determiner(char input)
 {
-     
+
 }
+
+// lexer
+tokenLexeme lexer(string input)
+{
+     
+
+}
+
 
 int main()
 {
