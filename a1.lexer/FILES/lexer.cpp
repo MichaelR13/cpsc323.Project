@@ -68,7 +68,23 @@ tokenLexeme lexer(string input)
      tokString.push_back(inputChar); // Add the current character to the lexeme
 
      // Now check the first char and determine which FSM to use
+     // Case for Integer and Reals
+     if (isdigit(inputChar))
+     {
+          // Read char until it terminate with a token
+     }
 
+     // Case for Identifiers
+     else if (isalpha(inputChar))
+     {
+          // Read char until it terminate with a token
+     }
+
+     // Case for other sep/ops
+     else
+     {
+          // Read char until it terminate with a token
+     }
 }
 
 
