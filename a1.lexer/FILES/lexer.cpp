@@ -68,7 +68,22 @@ tokenLexeme lexer(string input)
 
 int main()
 {
+     // chars that will store the characters from the source code file
+     char currentChar;   // This will store the current character
+     char ch[100];        // This will store the characters from the source code file
+
      // Open the source code file
+     ifstream fin("input.txt");
+
+     if(fin.is_open())
+     {
+          cout << "File opened successfully" << endl;
+     }
+     else
+     {
+          cout << "Unable to open file" << endl;
+          exit(0);
+     }
 
      // while not finished (i.e. not end of the source file) do
      //     call the lexer for a token
@@ -76,10 +91,20 @@ int main()
      //     open the output file (output.txt)
      //     print the token and lexeme to the output file
      //     close the output file
-
      // end while
 
-     // Close the source code file
+     while(!fin.eof())
+     {
+          currentChar = fin.get(); // Get the current character from the source code file
+          for (int i = 0; i < 100; i++)
+          {
+               ch[i] = currentChar; // Store the current character into the array
+          }
+     }
+
+     // Close the source code file and call lexer
+     fin.close();
+     lexer(ch);
 
      return 0;
 }
