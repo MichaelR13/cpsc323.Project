@@ -61,7 +61,13 @@ int FSM_determiner(char input)
 // lexer
 tokenLexeme lexer(string input)
 {
-     
+     tokenLexeme returnTok;
+     int state = 1; // This will hold the current state of the FSM
+     char inputChar; // This will hold the current character of the input
+     string tokString = ""; // This will hold the lexeme
+     tokString.push_back(inputChar); // Add the current character to the lexeme
+
+     // Now check the first char and determine which FSM to use
 
 }
 

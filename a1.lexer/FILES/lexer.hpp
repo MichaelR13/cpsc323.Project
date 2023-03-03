@@ -15,6 +15,13 @@
 
 using namespace std;
 
+//functions that will be used to find the input type
+bool isOperator(char input);
+bool isSeparator(char input);
+bool isKeyword(string input);
+bool isWhitespace(char input);
+string isOpOrSep(char input);
+
 // Make 2 finite state machines, one for the Identifier and one for Integer + Real
 int FSM_determiner(char input); // This function will determine which FSM to use
 
@@ -68,5 +75,5 @@ class tokenLexeme // This class will hold the token and lexeme
         }
 };
 
-tokenLexeme lexer(string input); // This function will return the token and lexeme to the main function
+tokenLexeme lexer(string input_file); // This function will return the token and lexeme to the main function
 
