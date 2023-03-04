@@ -101,21 +101,6 @@ bool isSep(char currentChar)
      }
 }
 
-bool isID(char currentChar)
-{
-
-}
-
-bool isInt(char ch[])
-{
-
-}
-
-bool isReal(char ch[])
-{
-
-}
-
 bool isKeyword(string input)
 {
      vector<string> keywords = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
@@ -131,15 +116,98 @@ bool isKeyword(string input)
      }
 }
 
+bool isLetter(char input)
+{
+     string letterString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+     // Check if the input is a letter
+     if (letterString.find(input) != string::npos)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
+}
+
+bool isDigit(char input)
+{
+     string digitString = "0123456789";
+
+     // Check if the input is a digit
+     if (digitString.find(input) != string::npos)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
+}
+
+bool isUnderscore(char input)
+{
+     char underscore = '_';
+     if (input == underscore)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
+}
+
+bool isPeriod(char input)
+{
+     char period = '.';
+     if (input == period)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
+}
+
 int columnDeterminerFSM(char input)
 {
+     int column;
 
+     if (isLetter(input))
+     {
+          column = 0;
+     }
+
+     else if (isDigit(input))
+     {
+          column = 1;
+     }
+
+     else if (isUnderscore(input))
+     {
+          column = 2;
+     }
+
+     else if (isPeriod(input))
+     {
+          column = 3;
+     }
+
+     else
+     {
+          column = 4;
+     }
+
+     return column;
 }
 
 // Here will be both FSMs
 
 // FSM for Identifiers
-int FSM_ID(int state, char input)
+int isID(int state, char input)
 {
 
 }
@@ -150,7 +218,7 @@ bool is_accepting_state_ID(int state)
 }
 
 // FSM for Integers and Reals
-int FSM_IntReal(int state, char input)
+int isIntReal(int state, char input)
 {
 
 }
