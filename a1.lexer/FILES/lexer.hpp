@@ -23,7 +23,8 @@ bool isWhitespace(char input);
 string isOpOrSep(char input);
 
 // Make 2 finite state machines, one for the Identifier and one for Integer + Real
-int FSM_determiner(char input); // This function will determine which FSM to use
+// Helper function that determines the column of the FSM
+int columnDeterminerFSM(char input);
 
 // Finite State Machine for Identifiers
 int FSM_ID(int state, char input); // This function will return the next state of the FSM
@@ -34,7 +35,11 @@ int FSM_IntReal(int state, char input); // This function will return the next st
 bool is_accepting_state_IntReal(int state); // This function will determine if the FSM is in an accepting state
 
 // Find out the token type using the final state of the FSM
-string token_type(int state); // This function will return the token type
+string endOfIntReal(int state); 
+string endOfID(int state);
+
+// Add an instruction table to the lexer that w
+
 
 // Start lexer function
 

@@ -36,7 +36,6 @@ real            23.00
 separator       ;
 keyword         endwhile
 */
-#include "lexer.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -48,6 +47,11 @@ keyword         endwhile
 #include <cctype>
 
 using namespace std;
+
+// Initialize the variables that will be used in the lexer
+char currentChar;   // This will store the current character
+char ch[100];        // This will store the characters from the source code file
+int i = 0;          // This will be used to iterate through the array of stored characters
 
 // List our accepted operators and separators
 char operators[] = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
@@ -64,6 +68,31 @@ bool endOfSep = false;
 bool endOfID = false;
 bool endOfInt = false;
 bool endOfReal = false;
+
+bool isOp(char currentChar)
+{
+
+}
+
+bool isSep(char currentChar)
+{
+
+}
+
+bool isID(char currentChar)
+{
+
+}
+
+bool isInt(char ch[])
+{
+
+}
+
+bool isReal(char ch[])
+{
+
+}
 
 // Find which FSM to use given the input
 int FSM_determiner(char input)
