@@ -140,6 +140,57 @@ string idState(int state)
 
 }
 
+// class for the tokens
+class tokenLexeme
+{
+     private:
+          string token;
+          string lexeme;
+     public:
+          // constructor
+          tokenLexeme()
+          {
+               token = "null";
+               lexeme = "null";
+          }
+
+          // accessor functions
+          string getToken()
+          {
+               return token;
+          }
+
+          string getLexeme()
+          {
+               return lexeme;
+          }
+
+          void updateToken(string newToken)
+          {
+               token = newToken;
+          }
+
+          void updateLexeme(string newLexeme)
+          {
+               lexeme = newLexeme;
+          }
+
+          // helper function to print 
+          void initPrint()
+          {
+               cout << "Output:" << endl;
+               cout << setw(10) << left << "Token" << setw(10) << left << "Lexeme" << endl;
+               cout << setw(10) << left << "-----" << setw(10) << left << "------" << endl;
+          }
+
+          void print()
+          {
+               cout << setw(10) << left << token << setw(10) << left << lexeme << endl;
+          }
+};
+
+
+// The lexer function
 void lexer()
 {
 
