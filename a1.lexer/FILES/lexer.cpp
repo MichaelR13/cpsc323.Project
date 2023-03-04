@@ -94,39 +94,55 @@ bool isReal(char ch[])
 
 }
 
-// Find which FSM to use given the input
-int FSM_determiner(char input)
+bool isKeyword(string input)
 {
 
 }
 
-// lexer
-tokenLexeme lexer(string input)
+int columnDeterminerFSM(char input)
 {
-     tokenLexeme returnTok;
-     int state = 1; // This will hold the current state of the FSM
-     char inputChar; // This will hold the current character of the input
-     string tokString = ""; // This will hold the lexeme
-     tokString.push_back(inputChar); // Add the current character to the lexeme
 
-     // Now check the first char and determine which FSM to use
-     // Case for Integer and Reals
-     if (isdigit(inputChar))
-     {
-          // Read char until it terminate with a token
-     }
+}
 
-     // Case for Identifiers
-     else if (isalpha(inputChar))
-     {
-          // Read char until it terminate with a token
-     }
+// Here will be both FSMs
 
-     // Case for other sep/ops
-     else
-     {
-          // Read char until it terminate with a token
-     }
+// FSM for Identifiers
+int FSM_ID(int state, char input)
+{
+
+}
+
+bool is_accepting_state_ID(int state)
+{
+
+}
+
+// FSM for Integers and Reals
+int FSM_IntReal(int state, char input)
+{
+
+}
+
+bool is_accepting_state_IntReal(int state)
+{
+
+}
+
+// Helper function that returns the token type based on the FSM state for Int and Real
+string intRealState(int state)
+{
+
+}
+
+// Helper function that returns the token type based on the FSM state for ID
+string idState(int state)
+{
+
+}
+
+void lexer()
+{
+
 }
 
 
