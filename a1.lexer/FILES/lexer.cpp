@@ -54,13 +54,14 @@ char currentChar;   // This will store the current character
 char ch[100];        // This will store the characters from the source code file
 int i = 0;          // This will be used to iterate through the array of stored characters
 
-// List our accepted operators and separators
+/* List our accepted operators and separators
 char operators[] = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
 char separators[] = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
 
-// List our accepted keywords
+List our accepted keywords
 string keywords[] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
 
+*/
 // NOTE: ID, INT, and REAL would be determined by the final state of the FSM
 
 // List of the states that will be used in the FSM, will be false by default
@@ -72,12 +73,32 @@ bool endOfReal = false;
 
 bool isOp(char currentChar)
 {
-
+     string opString = "+-*/=<>!&|%";
+     
+     // Check if the current character is an operator
+     if (opString.find(currentChar) != string::npos)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
 }
 
 bool isSep(char currentChar)
 {
+     string sepString = "(){}[],;:#";
 
+     // Check if the current character is a separator
+     if (sepString.find(currentChar) != string::npos)
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
 }
 
 bool isID(char currentChar)
