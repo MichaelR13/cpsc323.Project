@@ -45,6 +45,7 @@ keyword         endwhile
 #include <vector>
 #include <algorithm>
 #include <cctype>
+#include <string.h>
 
 using namespace std;
 
@@ -199,43 +200,46 @@ void lexer()
 
 int main()
 {
-     // chars that will store the characters from the source code file
-     char currentChar;   // This will store the current character
-     char ch[100];        // This will store the characters from the source code file
+     // Open the users desired files
+     string userFile, outputFile;
+     cout << "Enter the name of the file you would like to open: " << endl;
+     cin >> userFile;
 
-     // Open the source code file
-     ifstream fin("input.txt");
+     cout << "Enter the name of the file you would like to output to: " << endl;
+     cin >> outputFile;
 
-     if(fin.is_open())
+     // Open the files
+     ifstream inFile;
+     inFile.open(userFile);
+     
+     ofstream outFile;
+     outFile.open(outputFile);
+
+     // Logicical side of the main function
+     if (!inFile.is_open())
      {
-          cout << "File opened successfully" << endl;
-     }
-     else
-     {
-          cout << "Unable to open file" << endl;
-          exit(0);
-     }
-
-     // while not finished (i.e. not end of the source file) do
-     //     call the lexer for a token
-     //     receive the token and lexeme from vectors in lexer
-     //     open the output file (output.txt)
-     //     print the token and lexeme to the output file
-     //     close the output file
-     // end while
-
-     while(!fin.eof())
-     {
-          currentChar = fin.get(); // Get the current character from the source code file
-          for (int i = 0; i < 100; i++)
-          {
-               ch[i] = currentChar; // Store the current character into the array
-          }
+          cout << "Error opening file" << endl;
+          exit(1);
      }
 
-     // Close the source code file and call lexer
-     fin.close();
-     lexer(ch);
+     // print out the table contents
+     tokenLexeme token;
+     token.initPrint();
+
+     while (!inFile.eof())
+     {
+          // Read in the file
+          inFile.get(currentChar);
+          ch[i] = currentChar;
+          i++;
+
+          // Call the lexer function
+          lexer();
+     }
+
+     // Close the files
+     inFile.close();
+     outFile.close();
 
      return 0;
 }
