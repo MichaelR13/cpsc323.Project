@@ -36,9 +36,6 @@ real            23.00
 separator       ;
 keyword         endwhile
 */
-
-#pragma once
-
 #include "lexer.hpp"
 
 #include <iostream>
@@ -51,6 +48,22 @@ keyword         endwhile
 #include <cctype>
 
 using namespace std;
+
+// List our accepted operators and separators
+char operators[] = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
+char separators[] = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
+
+// List our accepted keywords
+string keywords[] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
+
+// NOTE: ID, INT, and REAL would be determined by the final state of the FSM
+
+// List of the states that will be used in the FSM, will be false by default
+bool endOfOp = false;
+bool endOfSep = false;
+bool endOfID = false;
+bool endOfInt = false;
+bool endOfReal = false;
 
 // Find which FSM to use given the input
 int FSM_determiner(char input)
