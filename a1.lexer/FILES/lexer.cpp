@@ -118,7 +118,17 @@ bool isReal(char ch[])
 
 bool isKeyword(string input)
 {
+     vector<string> keywords = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
 
+     // Check if the input is a keyword
+     if (find(keywords.begin(), keywords.end(), input) != keywords.end())
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
 }
 
 int columnDeterminerFSM(char input)
