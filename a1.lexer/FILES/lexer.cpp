@@ -580,8 +580,11 @@ int main()
           ch[i] = currentChar;
           i++;
 
-          // Call the lexer function
-          lexer();
+          // Use the lexer function
+          token = lexer(inFile, outFile);
+
+          // Print out the token and lexeme
+          token.print();
      }
 
      // Close the files
