@@ -210,34 +210,89 @@ int columnDeterminerFSM(char input)
 int isID(int state, char input)
 {
 
+     int stateID[5][5] = {
+          // L,  D,  _,  .,  E
+          {1, 2, 3, 4, 5},    
+          {1, 1, 1, 1, 1},
+          {2, 2, 2, 2, 2},
+          {3, 3, 3, 3, 3},
+          {4, 4, 4, 4, 4}
+     };
+
+     int stateRow = state - 1;
+     int stateColumn = columnDeterminerFSM(input);
+     return stateID[stateRow][stateColumn]; 
 }
 
 bool is_accepting_state_ID(int state)
 {
-
+     if (state == 1 || state == 2 || state == 3)  // 1, 2, and 3 are the accepting states for ID
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
 }
 
 // FSM for Integers and Reals
 int isIntReal(int state, char input)
 {
+     int stateIntReal[5][5] = {
+          // L,  D,  _,  .,  E
+          {1, 2, 3, 4, 5},    
+          {1, 1, 1, 1, 1},
+          {2, 2, 2, 2, 2},
+          {3, 3, 3, 3, 3},
+          {4, 4, 4, 4, 4}
+     };
 
+     int stateRow = state - 1;
+     int stateColumn = columnDeterminerFSM(input);
+     return stateIntReal[stateRow][stateColumn];
 }
 
 bool is_accepting_state_IntReal(int state)
 {
-
+     if (state == 1 || state == 2)  // 1 and 2 are the accepting states for Int and Real
+     {
+          return true;
+     }
+     else
+     {
+          return false;
+     }
 }
 
 // Helper function that returns the token type based on the FSM state for Int and Real
 string intRealState(int state)
 {
-
+     if (state == 1)
+     {
+          return "INT";
+     }
+     else if (state == 2)
+     {
+          return "REAL";
+     }
+     else
+     {
+          return "null";
+     }
 }
 
 // Helper function that returns the token type based on the FSM state for ID
 string idState(int state)
 {
-
+     if (state == 1)
+     {
+          return "ID";
+     }
+     else
+     {
+          return "null";
+     }
 }
 
 // class for the tokens
@@ -291,9 +346,34 @@ class tokenLexeme
 
 
 // The lexer function
-void lexer()
+tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
 {
+     tokenLexeme token;
+     char inChar;
+     int state = 1;
 
+     // Read the first character of the file
+     inFile.get(inChar);
+     string tokString = "";   // has to be empty for the first character
+     tokString.push_back(inChar);  // push the first character into the string
+
+     // Now check which FSM to use
+     if (isDigit(inChar))
+     {
+          while (!inFile.eof())
+          {
+               inFile.get(inChar);
+               tokString.push_back(inChar);
+               state = isIntReal(state, inChar);
+               if (is_accepting_state_IntReal(state))
+               {
+                    token.updateToken(intRealState(state));
+                    token.updateLexeme(tokString);
+                    token.print();
+                    return token;
+               }
+          }
+     }
 }
 
 
