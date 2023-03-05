@@ -358,7 +358,7 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
      tokString.push_back(inChar);  // push the first character into the string
 
      // Now check which FSM to use
-     if (isDigit(inChar))
+     if (isDigit(inChar))     // int or real
      {
           while (!inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
           {
@@ -378,6 +378,21 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           token.updateLexeme(returnLexeme);
 
           return token;
+     }
+
+     else if (isLetter(inChar))    // Identifier
+     {
+
+     }
+
+     else if (inChar = '\0' || inFile.eof())
+     {
+
+     }
+
+     else
+     {
+
      }
 }
 
