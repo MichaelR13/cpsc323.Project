@@ -242,13 +242,13 @@ int columnDeterminerFSM(char input)
 int isID(int state, char input)
 {
 
-     int stateID[5][5] = {
-          // L,  D,  _,  .,  E
-          {1, 2, 3, 4, 5},    
-          {1, 1, 1, 1, 1},
-          {2, 2, 2, 2, 2},
-          {3, 3, 3, 3, 3},
-          {4, 4, 4, 4, 4}
+     int stateID[5][5] = 
+     {
+     {2, 2, 2, 3, 4},
+     {2, 2, 2, 3, 4},
+     {4, 4, 4, 4, 5},
+     {5, 5, 5, 5, 5},
+     {5, 5, 5, 5, 5}
      };
 
      int stateRow = state - 1;
@@ -271,13 +271,14 @@ bool is_accepting_state_ID(int state)
 // FSM for Integers and Reals
 int isIntReal(int state, char input)
 {
-     int stateIntReal[5][5] = {
-          // L,  D,  _,  .,  E
-          {1, 2, 3, 4, 5},    
-          {1, 1, 1, 1, 1},
-          {2, 2, 2, 2, 2},
-          {3, 3, 3, 3, 3},
-          {4, 4, 4, 4, 4}
+     int stateIntReal[7][5] = {
+     {4, 2, 4, 3, 5},
+     {4, 2, 4, 3, 5},
+     {4, 3, 4, 4, 6},
+     {4, 4, 4, 4, 7},
+     {7, 7, 7, 7, 7},
+     {7, 7, 7, 7, 7},
+     {7, 7, 7, 7, 7}
      };
 
      int stateRow = state - 1;
@@ -287,7 +288,7 @@ int isIntReal(int state, char input)
 
 bool is_accepting_state_IntReal(int state)
 {
-     if (state == 1 || state == 2)  // 1 and 2 are the accepting states for Int and Real
+    if (state == 1 || state == 2 || state == 3 || state == 4) // 1, 2, 3, and 4 are the accepting states for Int and Real
      {
           return true;
      }
@@ -300,30 +301,38 @@ bool is_accepting_state_IntReal(int state)
 // Helper function that returns the token type based on the FSM state for Int and Real
 string intRealState(int state)
 {
-     if (state == 1)
+     if (state == 5) 
      {
-          return "INT";
+          return "Integer";
      }
-     else if (state == 2)
+     else if (state == 6) 
      {
-          return "REAL";
+          return "Real";
+     }
+     else if (state == 7)
+     {
+          return "Invalid token";
      }
      else
      {
-          return "null";
+          return "error";     // NOTE: this output is being looped infinitely
      }
 }
 
 // Helper function that returns the token type based on the FSM state for ID
 string idState(int state)
 {
-     if (state == 1)
+     if (state == 4) 
      {
-          return "ID";
+          return "Identifier";
+     }
+     else if (state == 5) 
+     {
+          return "Invalid Token";
      }
      else
      {
-          return "null";
+          return "An error occured. Still in accepting state";
      }
 }
 
@@ -601,11 +610,12 @@ int main()
      // Print the header
      token.initPrint();
 
-     // Call the lexer function
-     token = lexer(inFile, outFile);
-
-     // Print the token and lexeme
-     token.print();
+     // Use the lexer function to get the tokens and lexemes and print them to the output file
+     while (inFile.eof() != true)
+     {
+          token = lexer(inFile, outFile);
+          token.print();
+     }
 
      // Close the files
      inFile.close();
