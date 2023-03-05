@@ -172,6 +172,21 @@ bool isPeriod(char input)
      }
 }
 
+bool isWS(char input)
+{
+     string whiteSpace = "\n\t ";
+     
+     if (whiteSpace.find(input) != string::npos)
+     {
+          return true;
+     }
+
+     else
+     {
+          return false;
+     }
+}
+
 // Helper function that determines other separators
 string opSep(char input)
 {
@@ -422,6 +437,17 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           }
 
           token.updateToken(returnToken);
+
+          return token;
+     }
+
+     else if (isWS(inChar))
+     {
+          string returnToken = "Other Separators";
+          string returnLexeme = tokString;
+
+          token.updateToken(returnToken);
+          token.updateLexeme(returnLexeme);
 
           return token;
      }
