@@ -172,6 +172,23 @@ bool isPeriod(char input)
      }
 }
 
+// Helper function that determines other separators
+string opSep(char input)
+{
+     if (isOp(input) != 0)
+     {
+          return "operator";
+     }
+     else if (isSep(input) != 0)
+     {
+          return "separator";
+     }
+     else
+     {
+          return "other separator";
+     }
+}
+
 int columnDeterminerFSM(char input)
 {
      int column;
@@ -416,9 +433,81 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           return token;
      }
 
-     else
+     else // other ops and seps 
      {
-          
+          string returnToken = opSep(inChar);
+          string returnLexeme = tokString;
+
+          char holder;
+
+          if (returnLexeme == "$")
+          {
+               inFile.get(holder);
+
+               if (holder == '$')
+               {
+                    returnLexeme += holder;
+               }
+
+               else
+               {
+                    inFile.unget();
+               }
+          }
+
+          else if (returnLexeme == "!")
+          {
+               inFile.get(holder);
+
+               if (holder == '=')
+               {
+                    returnLexeme += holder;
+               }
+
+               else
+               {
+                    inFile.unget();
+               }
+          }
+
+          else if (returnLexeme == "=")
+          {
+               inFile.get(holder);
+               
+               if (holder == '=' || holder == '>')
+               {
+                    returnLexeme += holder;
+               }
+               
+               else
+               {
+                    inFile.unget();
+               }
+        }
+
+          else if (returnLexeme == "<")
+          {
+               inFile.get(holder);
+               if (holder == '=')
+               {
+                    returnLexeme += holder;
+               }
+               else
+               {
+                    inFile.unget();
+               }
+          }
+
+          else if (returnLexeme == "/")
+          {
+               // TODO
+          }
+
+          token.updateToken(returnToken);
+          token.updateLexeme(returnLexeme);
+
+          return token;
+
      }
 }
 
