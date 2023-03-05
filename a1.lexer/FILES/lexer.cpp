@@ -500,7 +500,40 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
 
           else if (returnLexeme == "/")
           {
-               // TODO
+               inFile.get(holder);
+
+               if (holder == '*')
+               {
+                    bool loop = true;
+
+                    while (loop == true)
+                    {
+                         inFile.get(holder);
+
+                         if (holder == '*')
+                         {
+                              inFile.get(holder);
+
+                              if (holder == '/')
+                              {
+                                   loop = false;
+                                   returnLexeme == "null";
+                                   returnToken == "null";
+                              }
+
+                              else
+                              {
+                                   inFile.unget();
+                              }
+                         }
+                    }
+               }
+
+               else
+               {
+                    inFile.unget();
+               }
+
           }
 
           token.updateToken(returnToken);
