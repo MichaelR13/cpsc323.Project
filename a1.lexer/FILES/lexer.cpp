@@ -382,17 +382,43 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
 
      else if (isLetter(inChar))    // Identifier
      {
+          while (inFile.eof() != true && is_accepting_state_ID(state))    // This will read chars until a token is made
+          {
+               inFile.get(inChar);
+               tokString.push_back(inChar);
+               state = isID(state, inChar);
+          }
+          if (inFile.eof() != true) // This will unget the last char if it is not the end of the file
+          {
+               inFile.unget();
+               tokString.pop_back();
+          }
 
+          string returnToken = idState(state);
+          string returnLexeme = tokString;
+
+          token.updateLexeme(returnLexeme);
+
+          if (isKeyword(returnLexeme))
+          {
+               returnToken = "KEYWORD";
+          }
+
+          token.updateToken(returnToken);
+
+          return token;
      }
 
-     else if (inChar = '\0' || inFile.eof())
+     else if (inChar = '\0' || inFile.eof()) // This will check if the file is empty
      {
+          cout << "error" << endl;
 
+          return token;
      }
 
      else
      {
-
+          
      }
 }
 
