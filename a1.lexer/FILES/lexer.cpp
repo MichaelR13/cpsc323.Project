@@ -49,11 +49,6 @@ keyword         endwhile
 
 using namespace std;
 
-// Initialize the variables that will be used in the lexer
-char currentChar;   // This will store the current character
-char ch[100];        // This will store the characters from the source code file
-int i = 0;          // This will be used to iterate through the array of stored characters
-
 /* List our accepted operators and separators
 char operators[] = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
 char separators[] = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
@@ -65,18 +60,20 @@ string keywords[] = { "if", "then", "else", "end", "repeat", "until", "read", "w
 // NOTE: ID, INT, and REAL would be determined by the final state of the FSM
 
 // List of the states that will be used in the FSM, will be false by default
+/*
 bool endOfOp = false;
 bool endOfSep = false;
 bool endOfID = false;
 bool endOfInt = false;
 bool endOfReal = false;
+*/
 
-bool isOp(char currentChar)
+bool isOp(char input)
 {
      string opString = "+-*/=<>!&|%";
      
      // Check if the current character is an operator
-     if (opString.find(currentChar) != string::npos)
+     if (opString.find(input) != string::npos)
      {
           return true;
      }
@@ -86,12 +83,12 @@ bool isOp(char currentChar)
      }
 }
 
-bool isSep(char currentChar)
+bool isSep(char input)
 {
      string sepString = "(){}[],;:#";
 
      // Check if the current character is a separator
-     if (sepString.find(currentChar) != string::npos)
+     if (sepString.find(input) != string::npos)
      {
           return true;
      }
@@ -315,7 +312,7 @@ string intRealState(int state)
      }
      else
      {
-          return "error";     // NOTE: this output is being looped infinitely
+          return "error in intRealState";     // NOTE: this output is being looped infinitely
      }
 }
 
@@ -332,7 +329,7 @@ string idState(int state)
      }
      else
      {
-          return "An error occured. Still in accepting state";
+          return "error in idState";
      }
 }
 
@@ -387,9 +384,9 @@ class tokenLexeme
 
 
 // The lexer function
-tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
+tokenLexeme lexer(ifstream &inFile)
 {
-     tokenLexeme token;
+     tokenLexeme giveTok;
      char inChar;
      int state = 1;
 
@@ -415,10 +412,10 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           string returnToken = intRealState(state);
           string returnLexeme = tokString;
 
-          token.updateToken(returnToken);
-          token.updateLexeme(returnLexeme);
+          giveTok.updateToken(returnToken);
+          giveTok.updateLexeme(returnLexeme);
 
-          return token;
+          return giveTok;
      }
 
      else if (isLetter(inChar))    // Identifier
@@ -438,16 +435,16 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           string returnToken = idState(state);
           string returnLexeme = tokString;
 
-          token.updateLexeme(returnLexeme);
+          giveTok.updateLexeme(returnLexeme);
 
           if (isKeyword(returnLexeme))
           {
                returnToken = "KEYWORD";
           }
 
-          token.updateToken(returnToken);
+          giveTok.updateToken(returnToken);
 
-          return token;
+          return giveTok;
      }
 
      else if (isWS(inChar))
@@ -455,17 +452,17 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
           string returnToken = "Other Separators";
           string returnLexeme = tokString;
 
-          token.updateToken(returnToken);
-          token.updateLexeme(returnLexeme);
+          giveTok.updateToken(returnToken);
+          giveTok.updateLexeme(returnLexeme);
 
-          return token;
+          return giveTok;
      }
 
      else if (inChar = '\0' || inFile.eof()) // This will check if the file is empty
      {
           cout << "error" << endl;
 
-          return token;
+          return giveTok;
      }
 
      else // other ops and seps 
@@ -571,10 +568,10 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
 
           }
 
-          token.updateToken(returnToken);
-          token.updateLexeme(returnLexeme);
+          giveTok.updateToken(returnToken);
+          giveTok.updateLexeme(returnLexeme);
 
-          return token;
+          return giveTok;
 
      }
 }
@@ -610,12 +607,11 @@ int main()
      // Print the header
      token.initPrint();
 
-     // Use the lexer function to get the tokens and lexemes and print them to the output file
-     while (inFile.eof() != true)
-     {
-          token = lexer(inFile, outFile);
-          token.print();
-     }
+     // Call the lexer function
+     token = lexer(inFile);
+
+     // Print the token and lexeme
+     token.print();
 
      // Close the files
      inFile.close();
