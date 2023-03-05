@@ -579,41 +579,31 @@ tokenLexeme lexer(ifstream &inFile)
 
 int main()
 {
-     // Ask user for the input file, and the output file to "output.txt", and open/close the files
-     string inFileName;
-     string outFileName = "output.txt";
-     cout << "Enter the input file name: ";
-     cin >> inFileName;
-     ifstream inFile(inFileName);
-     ofstream outFile(outFileName);
+     // Ask user for the input file, tokenize the entire file, output/write the tokens/lexemes to "output.txt", and open/close the files
+     string fileName;
+     cout << "Enter the name of the input file: ";
+     cin >> fileName;
 
-     // Check if the input file is open
-     if (!inFile.is_open())
+     ifstream inFile;
+     inFile.open(fileName);
+
+     ofstream outFile;
+     outFile.open("output.txt");
+
+     tokenLexeme tok;
+
+     tok.initPrint();
+
+     while (inFile.eof() != true)
      {
-          cout << "Error opening file" << endl;
-          return 0;
+          tok = lexer(inFile);
+
+          if (tok.getToken() != "null")
+          {
+               tok.print();
+          }
      }
 
-     // Check if the output file is open
-     if (!outFile.is_open())
-     {
-          cout << "Error opening file" << endl;
-          return 0;
-     }
-
-     // Create a tokenLexeme object
-     tokenLexeme token;
-
-     // Print the header
-     token.initPrint();
-
-     // Call the lexer function
-     token = lexer(inFile);
-
-     // Print the token and lexeme
-     token.print();
-
-     // Close the files
      inFile.close();
      outFile.close();
 
