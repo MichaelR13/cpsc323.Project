@@ -360,19 +360,24 @@ tokenLexeme lexer(ifstream &inFile, ofstream &outFile)
      // Now check which FSM to use
      if (isDigit(inChar))
      {
-          while (!inFile.eof())
+          while (!inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
           {
                inFile.get(inChar);
                tokString.push_back(inChar);
                state = isIntReal(state, inChar);
-               if (is_accepting_state_IntReal(state))
-               {
-                    token.updateToken(intRealState(state));
-                    token.updateLexeme(tokString);
-                    token.print();
-                    return token;
-               }
           }
+          if (inFile.eof() != true) // This will unget the last char if it is not the end of the file
+          {
+               inFile.unget();
+               tokString.pop_back();
+          }
+          string returnToken = intRealState(state);
+          string returnLexeme = tokString;
+
+          token.updateToken(returnToken);
+          token.updateLexeme(returnLexeme);
+
+          return token;
      }
 }
 
