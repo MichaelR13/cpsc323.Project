@@ -70,10 +70,10 @@ bool endOfReal = false;
 
 bool isOp(char input)
 {
-     string opString = "+-*/=<>!&|%";
+     vector<char> operators = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
      
      // Check if the current character is an operator
-     if (opString.find(input) != string::npos)
+     if (find(operators.begin(), operators.end(), input) != operators.end())
      {
           return true;
      }
@@ -85,10 +85,10 @@ bool isOp(char input)
 
 bool isSep(char input)
 {
-     string sepString = "(){}[],;:#";
-
+     vector<char> separators = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
+     
      // Check if the current character is a separator
-     if (sepString.find(input) != string::npos)
+     if (find(separators.begin(), separators.end(), input) != separators.end())
      {
           return true;
      }
@@ -96,6 +96,7 @@ bool isSep(char input)
      {
           return false;
      }
+
 }
 
 bool isKeyword(string input)
@@ -184,20 +185,78 @@ bool isWS(char input)
      }
 }
 
-// Helper function that determines other separators
+// Helper function that determines other operators and separators
 string opSep(char input)
 {
-     if (isOp(input) != 0)
-     {
-          return "operator";
-     }
-     else if (isSep(input) != 0)
-     {
-          return "separator";
-     }
-     else
-     {
-          return "other separator";
+    // Use isOp and isSep to determine if the input is an operator or separator
+    switch (input)
+    {
+     case '+':
+           return "operator";
+           break;
+     case '-':
+               return "operator";
+               break;
+     case '*':
+               return "operator";
+               break;
+     case '/':
+               return "operator";
+               break;
+     case '=':
+               return "operator";
+               break;
+     case '<':
+               return "operator";
+               break;
+     case '>':
+               return "operator";
+               break;
+     case '!':
+               return "operator";
+               break;
+     case '&':
+               return "operator";
+               break;
+     case '|':
+               return "operator";
+               break;
+     case '%':
+               return "operator";
+               break;
+     case '(':
+               return "separator";
+               break;
+     case ')':
+               return "separator";
+               break;
+     case '{':
+               return "separator";
+               break;
+     case '}':
+               return "separator";
+               break;
+     case '[':
+               return "separator";
+               break;
+     case ']':
+               return "separator";
+               break;
+     case ',':
+               return "separator";
+               break;
+     case ';':
+               return "separator";
+               break;
+     case ':':
+               return "separator";
+               break;
+     case '#':
+               return "separator";
+               break;
+     default:
+               return "OpSep error";
+               break;
      }
 }
 
@@ -397,8 +456,10 @@ tokenLexeme lexer(ifstream &inFile)
 
      // Now check which FSM to use
      if (isDigit(inChar))     // int or real
+     // Ex: 23.45 is a real
+     // Ex: 23 is an integer
      {
-          while (!inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
+          while (inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
           {
                inFile.get(inChar);
                tokString.push_back(inChar);
@@ -409,11 +470,12 @@ tokenLexeme lexer(ifstream &inFile)
                inFile.unget();
                tokString.pop_back();
           }
+
           string returnToken = intRealState(state);
           string returnLexeme = tokString;
 
-          giveTok.updateToken(returnToken);
           giveTok.updateLexeme(returnLexeme);
+          giveTok.updateToken(returnToken);
 
           return giveTok;
      }
@@ -449,7 +511,7 @@ tokenLexeme lexer(ifstream &inFile)
 
      else if (isWS(inChar))
      {
-          string returnToken = "Other Separators";
+          string returnToken = "Whitespace";
           string returnLexeme = tokString;
 
           giveTok.updateToken(returnToken);
