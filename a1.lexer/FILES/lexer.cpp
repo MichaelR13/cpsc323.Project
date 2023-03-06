@@ -70,10 +70,10 @@ bool endOfReal = false;
 
 bool isOp(char input)
 {
-     string opString = "+-*/=<>!&|%";
+     vector<char> operators = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
      
      // Check if the current character is an operator
-     if (opString.find(input) != string::npos)
+     if (find(operators.begin(), operators.end(), input) != operators.end())
      {
           return true;
      }
@@ -85,10 +85,10 @@ bool isOp(char input)
 
 bool isSep(char input)
 {
-     string sepString = "(){}[],;:#";
-
+     vector<char> separators = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
+     
      // Check if the current character is a separator
-     if (sepString.find(input) != string::npos)
+     if (find(separators.begin(), separators.end(), input) != separators.end())
      {
           return true;
      }
@@ -96,6 +96,7 @@ bool isSep(char input)
      {
           return false;
      }
+
 }
 
 bool isKeyword(string input)
@@ -184,20 +185,78 @@ bool isWS(char input)
      }
 }
 
-// Helper function that determines other separators
+// Helper function that determines other operators and separators
 string opSep(char input)
 {
-     if (isOp(input) != 0)
-     {
-          return "operator";
-     }
-     else if (isSep(input) != 0)
-     {
-          return "separator";
-     }
-     else
-     {
-          return "other separator";
+    // Use isOp and isSep to determine if the input is an operator or separator
+    switch (input)
+    {
+     case '+':
+           return "operator";
+           break;
+     case '-':
+               return "operator";
+               break;
+     case '*':
+               return "operator";
+               break;
+     case '/':
+               return "operator";
+               break;
+     case '=':
+               return "operator";
+               break;
+     case '<':
+               return "operator";
+               break;
+     case '>':
+               return "operator";
+               break;
+     case '!':
+               return "operator";
+               break;
+     case '&':
+               return "operator";
+               break;
+     case '|':
+               return "operator";
+               break;
+     case '%':
+               return "operator";
+               break;
+     case '(':
+               return "separator";
+               break;
+     case ')':
+               return "separator";
+               break;
+     case '{':
+               return "separator";
+               break;
+     case '}':
+               return "separator";
+               break;
+     case '[':
+               return "separator";
+               break;
+     case ']':
+               return "separator";
+               break;
+     case ',':
+               return "separator";
+               break;
+     case ';':
+               return "separator";
+               break;
+     case ':':
+               return "separator";
+               break;
+     case '#':
+               return "separator";
+               break;
+     default:
+               return "OpSep error";
+               break;
      }
 }
 
@@ -397,8 +456,10 @@ tokenLexeme lexer(ifstream &inFile)
 
      // Now check which FSM to use
      if (isDigit(inChar))     // int or real
+     // Ex: 23.45 is a real
+     // Ex: 23 is an integer
      {
-          while (!inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
+          while (inFile.eof() != true && is_accepting_state_IntReal(state))    // This will read chars until a token is made
           {
                inFile.get(inChar);
                tokString.push_back(inChar);
@@ -409,11 +470,12 @@ tokenLexeme lexer(ifstream &inFile)
                inFile.unget();
                tokString.pop_back();
           }
+
           string returnToken = intRealState(state);
           string returnLexeme = tokString;
 
-          giveTok.updateToken(returnToken);
           giveTok.updateLexeme(returnLexeme);
+          giveTok.updateToken(returnToken);
 
           return giveTok;
      }
@@ -449,7 +511,7 @@ tokenLexeme lexer(ifstream &inFile)
 
      else if (isWS(inChar))
      {
-          string returnToken = "Other Separators";
+          string returnToken = "Whitespace";
           string returnLexeme = tokString;
 
           giveTok.updateToken(returnToken);
@@ -579,13 +641,13 @@ tokenLexeme lexer(ifstream &inFile)
 
 int main()
 {
-     // Ask user for the input file, and the output file to "output.txt", and open/close the files
+     // Ask user for the input file
      string inFileName;
-     string outFileName = "output.txt";
+     // string outFileName = "output.txt";
      cout << "Enter the input file name: ";
      cin >> inFileName;
      ifstream inFile(inFileName);
-     ofstream outFile(outFileName);
+     // ofstream outFile(outFileName);
 
      // Check if the input file is open
      if (!inFile.is_open())
@@ -594,13 +656,15 @@ int main()
           return 0;
      }
 
+     /*
      // Check if the output file is open
      if (!outFile.is_open())
      {
           cout << "Error opening file" << endl;
           return 0;
      }
-
+     */
+     /*
      // Create a tokenLexeme object
      tokenLexeme token;
 
@@ -612,10 +676,47 @@ int main()
 
      // Print the token and lexeme
      token.print();
+     */
 
-     // Close the files
+     // Because the code above is only outputting one token and lexeme, I will:
+     // Clone the contents of the input file into "helper.txt"
+     // Call initPrint() once
+     // 1. Use the lexer and print the 1st token/lexeme pair
+     // 2. Output that pair into the terminal
+     // 3. Delete the lexeme from the cloned input file
+     // Repeat steps 1-3 until the cloned file is empty
+     fstream hFile;
+
+     string nameH = "helper.txt";
+     
+     hFile.open(nameH, ios::out);
+
+     string contents;
+
+     while (!inFile.eof())
+     {
+          getline(inFile, contents);
+
+          hFile << contents << endl;
+     }
      inFile.close();
-     outFile.close();
+     hFile.close(); // helper.txt now has all we need
+
+     // Open clone file for reading
+     ifstream hFile(nameH);
+
+     if (!hFile.is_open())
+     {
+          cout << "Error opening cloned file" << endl;
+          return 0;
+     }
+
+     tokenLexeme token;
+
+     token.initPrint();
+
+     // Now comence steps 1-3, until the helper.txt is empty
+     
 
      return 0;
 }
