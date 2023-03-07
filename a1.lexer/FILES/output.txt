@@ -1,0 +1,12 @@
+token___________lexeme
+while			keyword
+(			seperator
+fahr			identifier
+<=			operator
+upper			identifier
+)			seperator
+a			identifier
+=			operator
+23.00			real
+;			seperator
+endwhile			keyword
