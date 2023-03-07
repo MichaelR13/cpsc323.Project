@@ -1,11 +1,5 @@
-// This lexer will be built using 2 Finite State Machines:
-// 1. FSM for Identifiers
-// 2. FSM for Integers and Real Numbers
-
 // This program will ask the user for a file name and then read/tokenize the file
 // and output the tokens to the console.
-
-// BASE THIS PROGRAM OFF OF sample.cpp
 
 #include <iostream>
 #include <fstream>
@@ -32,7 +26,7 @@ ofstream fout;  // output file
 
 // function that asks the user for a file name 
 
-void openFiles()
+void openFiles()    // This function will ask the user for the files name and then open the files
 {
     string inFile;
     cout << "Enter the name of the file you want to open";
@@ -44,11 +38,9 @@ void openFiles()
     cout << " (include the file extension): ";
     cin >> outFile;
     
-    // Now open the files
     fin.open(inFile);
     fout.open(outFile);
 
-    // Check if the files are open
     if (!fin.is_open() || !fout.is_open())
     {
         cout << "Error opening file" << endl;
@@ -62,7 +54,7 @@ void initPrint()// This will print the header for the output file
     fout << "lexeme___________________token" << endl;
 }
 
-// Check if a value in the array matches
+// Check if a value in the array matches the value passed in the function
 bool checkArr(char value, char* array, int size)
 {
     for (int counter = 0; counter < size; counter++)
@@ -84,11 +76,12 @@ void endPrint() // This will print the footer for the output file
 string intRealFSM(char num) {
 
     // There will be 3 states: 1 - Integer, 2 - Real, 3 - Error
-    int fsmIntReal[5][3] = {
-        /*0*/               {1, 3, 3},
-        /*1*/               {1, 2, 3},
-        /*2*/               {2, 3, 3},
-        /*3*/               {3, 3, 3}
+    int fsmIntReal[5][3] = 
+    {
+    {1, 3, 3},  // state 0  
+    {1, 2, 3},  // state 1
+    {2, 3, 3},  // state 2
+    {3, 3, 3}   // state 3
     };
 
     // Track position in FSM
@@ -98,35 +91,35 @@ string intRealFSM(char num) {
     char arr[100];
     arr[0] = num;   // Put the first number in the array
     int i = 1;
-    char charPlusOne;
+    char charPlusOne;   // This will hold the next character in the file
 
     // Loop through the file until the end of the file
     while (charPlusOne = fin.peek())    // fin.peek() will preview the next character in the file 
     {
         if (isdigit(charPlusOne))
         {
-            pos = fsmIntReal[pos][0];
+            pos = fsmIntReal[pos][0];   // Go to the next state
         }
 
         else if (charPlusOne == '.')
         {
-            pos = fsmIntReal[pos][1];
+            pos = fsmIntReal[pos][1];   // Go to the next state
         }
 
         else
         {
-            pos = fsmIntReal[pos][2];
+            pos = fsmIntReal[pos][2];   // Go to the next state
         }
 
         if (pos == 3)
         {
-            arr[i] = '\0';
+            arr[i] = '\0';  // Put a null character at the end of the array
             break;
         }
 
         else
         {
-            arr[i++] = charPlusOne;
+            arr[i++] = charPlusOne; // Load the next character into the array
         }
 
         fin.get();  // fin.get() will get the next character in the file
@@ -137,9 +130,9 @@ string intRealFSM(char num) {
 string isKeyword(char buf[])    // this function will check if the identifier is a keyword
 {
     string keywords[15] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile", "break", "continue", "for", "endfor" };
-    int counter = 0;  // counter
+    int counter = 0;
     
-    for (counter = 0; counter < 15; ++counter)
+    for (counter = 0; counter < 15; ++counter)  // Loop through the array of keywords
     {
         if (strcmp(keywords[counter].c_str(), buf) == 0)
         {
@@ -164,15 +157,16 @@ void lexer()
         if (isalpha(character))
         {
             int fsmIntReal[4][3] = {
-                /*0*/               {1, 3, 3},
-                /*1*/               {1, 2, 3},
-                /*2*/               {2, 3, 3},
-                /*3*/               {3, 3, 3},
+            {1, 3, 3},  // state 0
+            {1, 2, 3},  // state 1
+            {2, 3, 3},  // state 2
+            {3, 3, 3},  // state 3
             };
 
             int i = 0;  // counter
-            char IDarr[100];
-            IDarr[i] = character;
+            char IDarr[100];    // This will hold the identifier
+            IDarr[i] = character;   // Put the first character in the array
+
             char nextChar = fin.peek(); // fin.peek() will preview the next character in the file
 
             while (isalnum(nextChar) || nextChar == '_')
@@ -183,11 +177,11 @@ void lexer()
                 nextChar = fin.peek();  // fin.peek() will preview the next character in the file
             }
 
-            IDarr[++i] = '\0';
+            IDarr[++i] = '\0';  // Put a null character at the end of the array
 
-            string kWord = isKeyword(IDarr);
+            string kWord = isKeyword(IDarr);    // This will hold the keyword if the identifier is a keyword
             
-            if (kWord != "-1")
+            if (kWord != "-1")  // If the identifier is a keyword
             {
 				cout << kWord << "\t\t\tkeyword\n";
 				fout << kWord << "\t\t\tkeyword\n";
@@ -204,7 +198,7 @@ void lexer()
         {
             string num = intRealFSM(character); // This will hold the number that is being read from the file
 
-			if (num.find(".") != -1) 
+			if (num.find(".") != -1)    // If the number is a real number
             {
 				cout << num << "\t\t\treal\n";
 				fout << num << "\t\t\treal\n";
@@ -293,14 +287,14 @@ void lexer()
         }
     }
 
-    // Close the file
+    // Close the files
     fin.close();
     fout.close();
 }
 
 int main()
 {
-    openFiles();    // Ask the user for the file name and open the file
+    openFiles();    // Ask the user for the file names and open the files
     initPrint();    // Print the header
     lexer();    // Run the lexer
     endPrint(); // Print the footer
