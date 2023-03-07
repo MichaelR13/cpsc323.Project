@@ -29,6 +29,7 @@ void openFiles()
 
 // FSM for integers and real numbers
 string intRealFSM(char num) {
+
     // There will be 4 states: 1 - Integer, 2 - Real, 3 - Error, 4 - End
     int fsmIntReal[5][3] = {
         /*0*/               {1, 3, 3},
@@ -50,7 +51,7 @@ string intRealFSM(char num) {
     // Loop through the file until the end of the file
     while (charPlusOne = fin.peek())    // fin.peek() will preview the next character in the file 
     {
-        if (isDigit(charPlusOne))
+        if (isdigit(charPlusOne))
         {
             pos = fsmIntReal[pos][0];
         }
@@ -108,12 +109,12 @@ string identifierFSM(char letter) {
     // Loop through the file until the end of the file
     while (charPlusOne = fin.peek())    // fin.peek() will preview the next character in the file 
     {
-        if (isLetter(charPlusOne))
+        if (isalpha(charPlusOne))
         {
             pos = fsmIdentifier[pos][0];
         }
 
-        else if (isDigit(charPlusOne))
+        else if (isdigit(charPlusOne))
         {
             pos = fsmIdentifier[pos][0];
         }
@@ -149,19 +150,33 @@ string isKeyword(char arr[])    // this function will check if the identifier is
 {
     string keywords[11] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
     int i = 0;  // counter
-    while (i < 11)
+    
+    for (i = 0; i < 11; i++)
     {
-        if (strcmp(arr, keywords[i]) == 0)
+        if (strcmp(arr, keywords[i].c_str()) == 0)
         {
             return keywords[i];
         }
-        i++;
     }
     return "Not a keyword";
 }
 
+// Check if a value in the array matches
+bool checkArr(char value, char* array, int size)
+{
+    for (int instance = 0; instance < size; instance++)
+    {
+        if (value == array[instance])
+        {
+            return true;
+        }
+    }
+}
+
 void lexer()
 {
+
+    
     char character;
 
     // Make sure the file is open
@@ -179,7 +194,7 @@ void lexer()
         char seps[10] = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
 
         // Check if the character is a letter
-        if (isLetter(character))
+        if (isalpha(character))
         {
             int fsmIntReal[5][3] = {
                 /*0*/               {1, 3, 3},
@@ -195,7 +210,7 @@ void lexer()
             i++;
             char nextChar = fin.peek(); // fin.peek() will preview the next character in the file
 
-            while (isNum(nextChar) || nextChar == '_')
+            while (isalnum(nextChar) || nextChar == '_')
             {
                 IDarr[i] = nextChar;
                 i++;
@@ -220,7 +235,7 @@ void lexer()
         }
 
         // Check if the character is a digit
-        else if (isDigit(character))
+        else if (isdigit(character))
         {
             string num = intRealFSM(character);
 
