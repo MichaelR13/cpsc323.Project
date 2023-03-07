@@ -1,4 +1,4 @@
-token___________lexeme
+lexeme___________________token
 while			keyword
 (			seperator
 fahr			identifier

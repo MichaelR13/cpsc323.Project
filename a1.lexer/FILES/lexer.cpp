@@ -17,21 +17,45 @@
 
 using namespace std;
 
-ifstream fin("input.txt");
-ofstream fout("output.txt");
-// function that asks the user for a file name and opens the file
+// function prototypes
+void openFiles();
+void initPrint();
+void endPrint();
+bool checkArr(char value, char* array, int size);
+string intRealFSM(char num);
+string isKeyword(char buf[]);
+void lexer();
+
+// global variables
+ifstream fin;   // input file
+ofstream fout;  // output file
+
+// function that asks the user for a file name 
+
 void openFiles()
 {
     string inFile;
     cout << "Enter the name of the file you want to open: ";
     cin >> inFile;
-    ifstream fin(inFile);
-    ofstream fout("output.txt");
+    
+    string outFile = "output.txt";
+    
+    // Now open the files
+    fin.open(inFile);
+    fout.open(outFile);
+
+    // Check if the files are open
+    if (!fin.is_open() || !fout.is_open())
+    {
+        cout << "Error opening file" << endl;
+        exit(0);
+    }
 }
 
 void initPrint()// This will print the header for the output file
 {
-    fout << "token___________lexeme" << endl;
+    cout << "lexeme___________________token" << endl;
+    fout << "lexeme___________________token" << endl;
 }
 
 // Check if a value in the array matches
@@ -44,6 +68,12 @@ bool checkArr(char value, char* array, int size)
             return true;
         }
     }
+}
+
+void endPrint() // This will print the footer for the output file
+{
+    cout << "\n\nEND OF FILE\n\n" << endl;
+    fout << "\n\nEND OF FILE\n\n" << endl;
 }
 
 // FSM for integers and real numbers
@@ -118,13 +148,6 @@ string isKeyword(char buf[])    // this function will check if the identifier is
 void lexer()
 {
     char character; // This will hold the character that is being read from the file
-
-    // Make sure the file is open
-    if (!fin.is_open())
-    {
-        cout << "Error opening file" << endl;
-        exit(0);
-    }
 
     // Loop through the file until the end of the file
     while (!fin.eof())
@@ -242,7 +265,7 @@ void lexer()
                     fout << character << "\t\t\toperator\n";
                 }
             }
-            
+
             else
             {
 				cout << character << "\t\t\tseperator\n";
@@ -283,7 +306,9 @@ void lexer()
 
 int main()
 {
-    initPrint();
-    lexer();
+    openFiles();    // Ask the user for the file name and open the file
+    initPrint();    // Print the header
+    lexer();    // Run the lexer
+    endPrint(); // Print the footer
     return 0;
 }
