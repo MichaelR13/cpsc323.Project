@@ -136,10 +136,10 @@ string intRealFSM(char num) {
 
 string isKeyword(char buf[])    // this function will check if the identifier is a keyword
 {
-    string keywords[11] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile" };
+    string keywords[12] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile", "break" };
     int counter = 0;  // counter
     
-    for (counter = 0; counter < 11; ++counter)
+    for (counter = 0; counter < 12; ++counter)
     {
         if (strcmp(keywords[counter].c_str(), buf) == 0)
         {
@@ -250,7 +250,7 @@ void lexer()
 				fout << character << "\t\t\toperator\n";
 			}
             // Remove any whitespace
-            else if (character == ' ')
+            else if (character == ' ' || character == '\t' || character == '\n')
             {
                 continue;
             }
