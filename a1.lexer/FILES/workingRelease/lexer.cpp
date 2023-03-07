@@ -136,10 +136,10 @@ string intRealFSM(char num) {
 
 string isKeyword(char buf[])    // this function will check if the identifier is a keyword
 {
-    string keywords[12] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile", "break" };
+    string keywords[15] = { "if", "then", "else", "end", "repeat", "until", "read", "write", "while", "do", "endwhile", "break", "continue", "for", "endfor" };
     int counter = 0;  // counter
     
-    for (counter = 0; counter < 12; ++counter)
+    for (counter = 0; counter < 15; ++counter)
     {
         if (strcmp(keywords[counter].c_str(), buf) == 0)
         {
@@ -233,17 +233,7 @@ void lexer()
 				fout << character << nextChar << "\t\t\tseperator\n";
 				fin.get();
 			}
-			else if (nextChar == '*')
-            { 
-				cout << character << nextChar << "\t\t\tseperator\n";
-				fout << character << nextChar << "\t\t\tseperator\n";
-				fin.get();
-				char seeker;
-				while(seeker != '*'){
-					fin.get(seeker);
-				}
-				fin.unget();
-			}
+
 			else if (character == '*')
             {
 				cout << character << "\t\t\toperator\n";
