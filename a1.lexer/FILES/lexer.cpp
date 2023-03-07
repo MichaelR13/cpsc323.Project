@@ -181,7 +181,42 @@ void lexer()
         // Check if the character is a letter
         if (isLetter(character))
         {
+            int fsmIntReal[5][3] = {
+                /*0*/               {1, 3, 3},
+                /*1*/               {1, 2, 3},
+                /*2*/               {2, 3, 3},
+                /*3*/               {3, 3, 3},
+                /*4*/               {4, 4, 4}
+            };
 
+            int i = 0;  // counter
+            char IDarr[100];
+            IDarr[i] = character;
+            i++;
+            char nextChar = fin.peek(); // fin.peek() will preview the next character in the file
+
+            while (isNum(nextChar) || nextChar == '_')
+            {
+                IDarr[i] = nextChar;
+                i++;
+                fin.get();  // fin.get() will get the next character in the file
+                nextChar = fin.peek();  // fin.peek() will preview the next character in the file
+            }
+
+            IDarr[++i] = '\0';
+
+            string kWord = isKeyword(IDarr);
+            
+            if (kWord != "Not a keyword")
+            {
+                cout << kWord << " is a keyword" << endl;
+                fout << kWord << " is a keyword" << endl;
+            }
+            else
+            {
+                cout << IDarr << " is an identifier" << endl;
+                fout << IDarr << " is an identifier" << endl;
+            }
         }
 
         // Check if the character is a digit
