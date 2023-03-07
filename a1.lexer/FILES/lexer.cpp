@@ -35,10 +35,14 @@ ofstream fout;  // output file
 void openFiles()
 {
     string inFile;
-    cout << "Enter the name of the file you want to open: ";
+    cout << "Enter the name of the file you want to open";
+    cout << " (include the file extension): ";
     cin >> inFile;
     
-    string outFile = "output.txt";
+    string outFile;
+    cout << "Enter the name of the file you want to output to";
+    cout << " (include the file extension): ";
+    cin >> outFile;
     
     // Now open the files
     fin.open(inFile);
