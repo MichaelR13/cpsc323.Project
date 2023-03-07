@@ -1,35 +1,27 @@
-while (fahr <= upper) 
-{
-    a = 23.00
-    int celsius = 5 * (fahr-32) / 9;
-    printf("%d\t%d\n", fahr, celsius);
-    fahr = fahr + step;
-
-    if (a == 23.00) 
-    {
-        printf("a is 23.00\n");
-    } 
-    else if (a != 23.00) 
-    {
-        printf("a is not 23.00\n");
-    }
-    else 
-    {
-        continue;
-    }
-
-    for (int i = 0; i < 10; i++) 
-    {
-        printf("i is %d\n", i);
-
-        if (i == 5) 
-        {
+char ch;
+    double a, b;
+    while (1) {
+        printf("Enter an operator or x to exit");
+        scanf("%c", &ch);
+        if (ch == 'x')
+            exit(0);
+        printf("Enter two first and second operand");
+        scanf("%lf %lf",&a,&b);
+        switch (ch) {
+        case '+':
+            printf("%.1lf + %.1lf = %.1lf\n", a, b, a + b);
             break;
+        case '-':
+            printf("%.1lf - %.1lf = %.1lf\n", a, b, a - b);
+            break;
+        case '*':
+            printf("%.1lf * %.1lf = %.1lf\n", a, b, a * b);
+            break;
+        case '/':
+            printf("%.1lf / %.1lf = %.1lf\n", a, b, a / b);
+            break;
+        default:
+            printf("Error, please write a valid operator");
         }
-        else
-        {
-            printf("i is not 5\n");
-            continue;
-        }
-}
-endwhile 
+        endwhile;
+    }
