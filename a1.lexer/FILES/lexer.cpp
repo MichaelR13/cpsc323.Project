@@ -239,13 +239,37 @@ void lexer()
         //Check if it is an operator
         else if (checkArr(character, ops, 11))
         {
+            char nextChar = fin.peek(); // fin.peek() will preview the next character in the file
 
+            if (nextChar == '=')
+            {
+                cout << character << nextChar << " is an operator" << endl;
+                fout << character << nextChar << " is an operator" << endl;
+                fin.get();  // fin.get() will get the next character in the file
+            }
+            else
+            {
+                cout << character << " is an operator" << endl;
+                fout << character << " is an operator" << endl;
+            }
         }
 
         // Check if it is a separator
         else if (checkArr(character, seps, 10))
         {
-
+            char nextChar = fin.peek(); // fin.peek() will preview the next character in the file
+        
+            if (nextChar == '(')
+            {
+                cout << character << nextChar << " is a separator" << endl;
+                fout << character << nextChar << " is a separator" << endl;
+                fin.get();  // fin.get() will get the next character in the file
+            }
+            else
+            {
+                cout << character << " is a separator" << endl;
+                fout << character << " is a separator" << endl;
+            }
         }
     }
 
@@ -256,5 +280,6 @@ void lexer()
 
 int main()
 {
-
+    lexer();
+    return 0;
 }
