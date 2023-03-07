@@ -52,32 +52,34 @@ string intRealFSM(char num) {
     {
         if (isDigit(charPlusOne))
         {
-
+            pos = fsmIntReal[pos][0];
         }
 
         else if (charPlusOne == '.')
         {
-
+            pos = fsmIntReal[pos][1];
         }
 
         else
         {
-
+            pos = fsmIntReal[pos][2];
         }
 
         if (pos == 3)
         {
-            // Error
+            arr[i] = '\0';
+            break;
         }
 
         else if (pos == 4)
         {
-            // End
+            arr[i] = '\0';
+            break;
         }
 
         else
         {
-            // Continue
+            arr[i++] = charPlusOne;
         }
 
         fin.get();  // fin.get() will get the next character in the file
