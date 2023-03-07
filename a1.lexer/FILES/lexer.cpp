@@ -27,3 +27,21 @@ void openFiles()
     ofstream fout("output.txt");
 }
 
+// FSM for integers and real numbers
+string intRealFSM(char num) {
+
+}
+
+string identifierFSM(char letter) {
+
+}
+
+void lexer()
+{
+
+}
+
+int main()
+{
+
+}
