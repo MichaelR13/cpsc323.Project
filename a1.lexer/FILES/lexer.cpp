@@ -85,9 +85,60 @@ string intRealFSM(char num) {
     return arr;
 }
 
-string identifierFSM(char letter) 
-{
+string identifierFSM(char letter) {
+    // There will be 4 states: 1 - Identifier, 2 - Error, 3 - End
+    int fsmIdentifier[4][2] = {
+        /*Initial State 0*/ {1, 2},
+        /*State 1*/         {1, 3},
+        /*State 2*/         {2, 2},
+        /*State 3*/         {3, 3}
+    };
 
+    // Track position in FSM
+    int pos = 1;
+
+    // Hold the letters in an array
+    char arr[100];
+    arr[0] = letter;    // Put the first letter in the array
+    int i = 1;
+    char charPlusOne;
+
+    // Loop through the file until the end of the file
+    while (charPlusOne = fin.peek())    // fin.peek() will preview the next character in the file 
+    {
+        if (isLetter(charPlusOne))
+        {
+
+        }
+
+        else if (isDigit(charPlusOne))
+        {
+
+        }
+
+        else
+        {
+
+        }
+
+        if (pos == 2)
+        {
+            // Error
+        }
+
+        else if (pos == 3)
+        {
+            // End
+        }
+
+        else
+        {
+            // Continue
+        }
+
+        fin.get();  // fin.get() will get the next character in the file
+    }
+    return arr;
 }
 
 string isKeyword(char arr[])    // this function will check if the identifier is a keyword
