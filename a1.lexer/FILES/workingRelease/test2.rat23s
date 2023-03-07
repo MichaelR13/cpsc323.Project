@@ -1,0 +1,21 @@
+while (true)
+{
+cout << "Hello, world!" << endl;
+string name;
+int age, birthYear1, birthYear2;
+cout << "What is your name? ";
+cin >> name;
+cout << "How old are you? ";
+cin >> age;
+birthYear1 = 2023 - age;
+birthYear2 = 2022 - age;
+cout << "You were born in " <<  birthYear1 << " or " << birthYear2 << endl;
+cout << "Do you want to continue? (y/n) ";
+char answer;
+cin >> answer;
+if (answer == 'n')
+{
+    break;
+}
+}
+return 0;
