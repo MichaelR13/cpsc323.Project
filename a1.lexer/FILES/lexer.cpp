@@ -31,11 +31,11 @@ void openFiles()
 string intRealFSM(char num) {
     // There will be 4 states: 1 - Integer, 2 - Real, 3 - Error, 4 - End
     int fsmIntReal[5][3] = {
-        /*Initial State 0*/ {1, 3, 3},
-        /*State 1*/         {1, 2, 3},
-        /*State 2*/         {2, 3, 3},
-        /*State 3*/         {3, 3, 3},
-        /*State 4*/         {4, 4, 4}
+        /*0*/               {1, 3, 3},
+        /*1*/               {1, 2, 3},
+        /*2*/               {2, 3, 3},
+        /*3*/               {3, 3, 3},
+        /*4*/               {4, 4, 4}
     };
 
     // Track position in FSM
@@ -90,10 +90,10 @@ string intRealFSM(char num) {
 string identifierFSM(char letter) {
     // There will be 4 states: 1 - Identifier, 2 - Error, 3 - End
     int fsmIdentifier[4][2] = {
-        /*Initial State 0*/ {1, 2},
-        /*State 1*/         {1, 3},
-        /*State 2*/         {2, 2},
-        /*State 3*/         {3, 3}
+        /*0*/               {1, 2},
+        /*1*/               {1, 3},
+        /*2*/               {2, 2},
+        /*3*/               {3, 3}
     };
 
     // Track position in FSM
@@ -110,37 +110,39 @@ string identifierFSM(char letter) {
     {
         if (isLetter(charPlusOne))
         {
-
+            pos = fsmIdentifier[pos][0];
         }
 
         else if (isDigit(charPlusOne))
         {
-
+            pos = fsmIdentifier[pos][0];
         }
 
         else
         {
-
+            pos = fsmIdentifier[pos][1];
         }
 
         if (pos == 2)
         {
-            // Error
+            arr[i] = '\0';
+            break;
         }
 
         else if (pos == 3)
         {
-            // End
+            arr[i] = '\0';
+            break;
         }
 
         else
         {
-            // Continue
+            arr[i++] = charPlusOne;
         }
 
         fin.get();  // fin.get() will get the next character in the file
     }
-    return arr;
+    return  arr;
 }
 
 string isKeyword(char arr[])    // this function will check if the identifier is a keyword
@@ -160,7 +162,50 @@ string isKeyword(char arr[])    // this function will check if the identifier is
 
 void lexer()
 {
+    char character;
 
+    // Make sure the file is open
+    if (!fin.is_open())
+    {
+        cout << "Error opening file" << endl;
+        exit(1);
+    }
+
+    // Loop through the file until the end of the file
+    while (!fin.eof())
+    {
+        character = fin.get();  // fin.get() will get the next character in the file
+        char ops[11] = { '+', '-', '*', '/', '=', '<', '>', '!', '&', '|', '%' };
+        char seps[10] = { '(', ')', '{', '}', '[', ']', ',', ';', ':', '#' };
+
+        // Check if the character is a letter
+        if (isLetter(character))
+        {
+
+        }
+
+        // Check if the character is a digit
+        else if (isDigit(character))
+        {
+
+        }
+
+        //Check if it is an operator
+        else if (checkArr(character, ops, 11))
+        {
+
+        }
+
+        // Check if it is a separator
+        else if (checkArr(character, seps, 10))
+        {
+
+        }
+    }
+
+    // Close the file
+    fin.close();
+    fout.close();
 }
 
 int main()
