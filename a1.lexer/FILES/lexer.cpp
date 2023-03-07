@@ -222,7 +222,18 @@ void lexer()
         // Check if the character is a digit
         else if (isDigit(character))
         {
+            string num = intRealFSM(character);
 
+            if (num.find(".") != -1)
+            {
+                cout << num << " is a real number" << endl;
+                fout << num << " is a real number" << endl;
+            }
+            else 
+            {
+                cout << num << " is an integer" << endl;
+                fout << num << " is an integer" << endl;
+            }
         }
 
         //Check if it is an operator
