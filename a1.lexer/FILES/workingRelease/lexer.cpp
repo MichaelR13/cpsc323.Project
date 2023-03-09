@@ -75,7 +75,19 @@ void endPrint() // This will print the footer for the output file
 // FSM for integers and real numbers
 string intRealFSM(char num) {
 
-    // There will be 3 states: 1 - Integer, 2 - Real, 3 - Error
+    // There will be 4 states: 0 - Start, 1 - Integer, 2 - Real, 3 - Error
+    /*
+    Regular Expressions:
+        Real: [d]+.[d]+
+        Integer: [d]+
+
+    Thompson's Construction:
+        state 0 -> state 1 on [d]
+        state 1 -> state 2 on .
+        state 1 -> state 1 on [d]
+        state 2 -> state 3 on [d]
+        state 3 -> state 3 on [d] 
+    */
     int fsmIntReal[5][3] = 
     {
     {1, 3, 3},  // state 0  
