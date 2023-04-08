@@ -91,3 +91,4 @@ Procedure T();
 */
 
 // NOTE: Only exit when there is a syntax error
+// 36 functions, Output is printf statements (in a debug way)
