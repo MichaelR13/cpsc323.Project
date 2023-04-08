@@ -1,0 +1,46 @@
+Assignment 2 : Syntax Analyzer
+
+- 36 non-deterministic symbols, so 36 functions will be written
+- functions
+    o R1. <Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>
+        functionRat23s()
+        {
+            optional_function definitions();
+            if token = "#"
+                lexer();
+            else
+                error_message("# expected");
+            optional_declaration_list();
+            if token = "#"
+                lexer();
+            else
+                error_message("# expected");
+            statement_list();
+        }
+    o R8. <Qualifier> ::= int | bool | real
+        functionQualifier()
+        {
+            if token = "int" || token = "bool" || token = "real"
+                lexer();
+            else
+                error_message("int, bool, or real expected");
+        }
+    o R18. <If> ::= if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+        + remove backtracking
+            * <If> ::= if ( <Condition> ) <Statement> <Else Part> fi
+            * <Else Part> ::= fi | else <Statement> fi
+        functionIf()
+        {
+            if token = "if"
+                lexer();
+                if token = "("
+                    lexer();
+                    condition();
+                    if token = ")"
+                        lexer();
+                        statement();
+                        elsePart();
+                    else end
+                else end
+            else end
+        }
