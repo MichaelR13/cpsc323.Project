@@ -1,5 +1,7 @@
 // This program will ask the user for a file name and then read/tokenize the file
 // and output the tokens to the console.
+#ifndef LEXER_H
+#define LEXER_H
 
 #include <iostream>
 #include <fstream>
@@ -304,11 +306,4 @@ void lexer()
     fout.close();
 }
 
-int main()
-{
-    openFiles();    // Ask the user for the file names and open the files
-    initPrint();    // Print the header
-    lexer();    // Run the lexer
-    endPrint(); // Print the footer
-    return 0;
-}
+#endif
