@@ -110,10 +110,41 @@ using namespace std;
 
 // function prototypes
 void readToken();
+void errorHandling();
+void syntax();
+void openSyntaxFile();
+void closeSyntaxFile();
+
+// Global variables
 
 // function that opens the output file from the lexer and reads the tokens
 void readToken()
 {
     
 }
+
+// function that handles the errors
+void errorHandling()
+{
+    
+}
+
+// function that opens the output file that will store the output of the syntax analyzer
+void openSyntaxFile()
+{
+    
+}
+
+// function that closes the output file that will store the output of the syntax analyzer
+void closeSyntaxFile()
+{
+    
+}
+
+// main function for syntax analyzer
+void syntax()
+{
+    
+}
+
 #endif
