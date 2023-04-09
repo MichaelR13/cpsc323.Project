@@ -13,7 +13,7 @@ int main ()
     // Lexer portion
     // Read file and tokenize to output text file
     openFiles();    // Ask the user for the file names and open the files
-    initPrint();    // Print the header
+    //initPrint();    // Print the header
     lexer();    // Run the lexer
     endPrint(); // Print the footer
 
