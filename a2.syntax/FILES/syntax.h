@@ -98,5 +98,22 @@ Procedure T();
 
 #include "lexer.h"
 
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string>
+#include <string.h>
 
+using namespace std;
+
+// function prototypes
+void readToken();
+
+// function that opens the output file from the lexer and reads the tokens
+void readToken()
+{
+    
+}
 #endif

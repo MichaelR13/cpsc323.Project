@@ -19,4 +19,6 @@ int main ()
 
     // Syntax analyzer portion
 
+    return 0;
+
 }
