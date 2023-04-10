@@ -118,9 +118,31 @@ void closeSyntaxFile();
 // Global variables
 
 // function that opens the output file from the lexer and reads the tokens
+// NOTE: This function will read the output file from the lexer, and add the to token and lexeme arrays
+/* Ex:
+output file from lexer:
+while			keyword
+(			seperator
+fahr			identifier
+<=			operator
+upper			identifier
+)			seperator
+a			identifier
+=			operator
+23.00			real
+;			seperator
+endwhile			keyword
+
+lexeme array:
+while, (, fahr, <=, upper, ), a, =, 23.00, ;, endwhile
+
+token array:
+keyword, seperator, identifier, operator, identifier, seperator, identifier, operator, real, seperator, keyword
+
+*/
 void readToken()
 {
-    
+            
 }
 
 // function that handles the errors
