@@ -18,7 +18,7 @@ int main ()
     endPrint(); // Print the footer
 
     // Syntax analyzer portion
-
+    tester();   // test the token and lexeme vectors
     return 0;
 
 }

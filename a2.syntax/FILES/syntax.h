@@ -105,6 +105,7 @@ Procedure T();
 #include <ctype.h>
 #include <string>
 #include <string.h>
+#include <vector>
 
 using namespace std;
 
@@ -115,10 +116,17 @@ void syntax();
 void openSyntaxFile();
 void closeSyntaxFile();
 
-// Global variables
+// Debug prototypes
+void tester();
 
-// function that opens the output file from the lexer and reads the tokens
-// NOTE: This function will read the output file from the lexer, and add the to token and lexeme arrays
+// Global variables
+ifstream lexerOutput;
+ofstream syntaxOutput;
+vector<string> token;
+vector<string> lexeme;
+
+// function that opens the output file from the lexer and converts into a 2 vectors (token and lexeme)
+// NOTE: This function will read the output file from the lexer, and add the to token and lexeme vectors
 /* Ex:
 output file from lexer:
 while			keyword
@@ -133,16 +141,45 @@ a			identifier
 ;			seperator
 endwhile			keyword
 
-lexeme array:
+lexeme vector:
 while, (, fahr, <=, upper, ), a, =, 23.00, ;, endwhile
 
-token array:
+token vector:
 keyword, seperator, identifier, operator, identifier, seperator, identifier, operator, real, seperator, keyword
 
 */
 void readToken()
 {
-            
+    // open the output file from the lexer
+    lexerOutput.open("lexerOutput.txt");
+
+    // check if the file is open
+    if (!lexerOutput.is_open())
+    {
+        cout << "Error: Could not open the output file from the lexer" << endl;
+        exit(0);
+    }
+
+    // read the output file from the lexer, and add the to token and lexeme vectors
+    // NOTE: Use 2 consecutive, empty characters to distinguish between the start and end of tokens/lexemes
+    while (!lexerOutput.eof())
+    {   
+        // read the token
+        string tempToken;
+        getline(lexerOutput, tempToken, ' ');
+
+        // read the lexeme
+        string tempLexeme;
+        getline(lexerOutput, tempLexeme, ' ');
+
+        // add the token and lexeme to the vectors
+        token.push_back(tempToken);
+        lexeme.push_back(tempLexeme);
+
+        // read the empty character
+        string empty;
+        getline(lexerOutput, empty, ' ');
+    }
 }
 
 // function that handles the errors
@@ -161,6 +198,24 @@ void openSyntaxFile()
 void closeSyntaxFile()
 {
     
+}
+
+// Debug function that tests if the correct strings were added to the vectors, by printing them out
+void tester()
+{  
+    // print out the token vector
+    cout << "Token vector: " << endl;
+    for (int i = 0; i < token.size(); i++)
+    {
+        cout << token[i] << endl;
+    }
+
+    // print out the lexeme vector
+    cout << "Lexeme vector: " << endl;
+    for (int i = 0; i < lexeme.size(); i++)
+    {
+        cout << lexeme[i] << endl;
+    }
 }
 
 // main function for syntax analyzer
