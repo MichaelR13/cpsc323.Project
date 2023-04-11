@@ -1,6 +1,12 @@
 // Implementation of all recursive functions for parser
+
+// First remove left recursion from the grammar
+// Then Use a Recursive Descent Parser (RDP) to parse the input
+// NOTE: Generate error messages for syntax errors
+
 // If the rule the function represents is test true (this rule is used), then print the rule
 // 36 non-deterministic symbols, so 36 functions will be written
+
 /* Sample output:
 Token: Identifier Lexeme: a
  <Statement> -> <Assign>
