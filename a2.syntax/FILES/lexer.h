@@ -197,12 +197,12 @@ void lexer()
             
             if (kWord != "-1")  // If the identifier is a keyword
             {
-				cout << kWord << "\t\t\tkeyword\n";
+				//cout << kWord << "\t\t\tkeyword\n";
 				fout << kWord << "\t\t\tkeyword\n";
             }
             else
             {
-				cout << IDarr << "\t\t\tidentifier\n";
+				//cout << IDarr << "\t\t\tidentifier\n";
 				fout << IDarr << "\t\t\tidentifier\n";
             }
         }
@@ -214,12 +214,12 @@ void lexer()
 
 			if (num.find(".") != -1)    // If the number is a real number
             {
-				cout << num << "\t\t\treal\n";
+				//cout << num << "\t\t\treal\n";
 				fout << num << "\t\t\treal\n";
             }
             else
             {
-				cout << num << "\t\t\tinteger\n";
+				//cout << num << "\t\t\tinteger\n";
 				fout << num << "\t\t\tinteger\n";
             }
         }
@@ -231,20 +231,20 @@ void lexer()
 			
             if (nextChar == '%')
             {
-				cout << character << nextChar << "\t\t\tseperator\n";
+				//cout << character << nextChar << "\t\t\tseperator\n";
 				fout << character << nextChar << "\t\t\tseperator\n";
 				fin.get();
 			}
 			else if (nextChar == ']')
             { 
-				cout << character << nextChar << "\t\t\tseperator\n";
+				//cout << character << nextChar << "\t\t\tseperator\n";
 				fout << character << nextChar << "\t\t\tseperator\n";
 				fin.get();
 			}
 
 			else if (character == '*')
             {
-				cout << character << "\t\t\toperator\n";
+				//cout << character << "\t\t\toperator\n";
 				fout << character << "\t\t\toperator\n";
 			}
             // Remove any whitespace
@@ -257,20 +257,20 @@ void lexer()
             {
                 if (nextChar == '=')
                 {
-                    cout << character << nextChar << "\t\t\toperator\n";
+                    //cout << character << nextChar << "\t\t\toperator\n";
                     fout << character << nextChar << "\t\t\toperator\n";
                     fin.get();  // fin.get() will get the next character in the file
                 }
                 else
                 {
-                    cout << character << "\t\t\toperator\n";
+                    //cout << character << "\t\t\toperator\n";
                     fout << character << "\t\t\toperator\n";
                 }
             }
 
             else
             {
-				cout << character << "\t\t\tseperator\n";
+				//cout << character << "\t\t\tseperator\n";
 				fout << character << "\t\t\tseperator\n";
             }
         }
@@ -282,19 +282,19 @@ void lexer()
 
             if (nextChar == '>')
             {
-				cout << character << nextChar << "\t\t\toperator\n";
+				//cout << character << nextChar << "\t\t\toperator\n";
 				fout << character << nextChar << "\t\t\toperator\n";
                 fin.get();  // fin.get() will get the next character in the file
             }
             else if (nextChar == '=')
             {
-				cout << character << nextChar << "\t\t\toperator\n";
+				//cout << character << nextChar << "\t\t\toperator\n";
 				fout << character << nextChar << "\t\t\toperator\n";
                 fin.get();  // fin.get() will get the next character in the file
             }
             else
             {
-				cout << character << "\t\t\toperator\n";
+				//cout << character << "\t\t\toperator\n";
 				fout << character << "\t\t\toperator\n";
             }
 

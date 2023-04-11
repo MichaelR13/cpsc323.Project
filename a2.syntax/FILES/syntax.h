@@ -162,24 +162,35 @@ void readToken()
 
     // read the output file from the lexer, and add the to token and lexeme vectors
     // NOTE: Use 2 consecutive, empty characters to distinguish between the start and end of tokens/lexemes
-    while (!lexerOutput.eof())
-    {   
-        // read the token
-        string tempToken;
-        getline(lexerOutput, tempToken, ' ');
+    /*
+    lexeme vector:
+    while, (, fahr, <=, upper, ), a, =, 23.00, ;, endwhile
 
-        // read the lexeme
-        string tempLexeme;
-        getline(lexerOutput, tempLexeme, ' ');
+    token vector:
+    keyword, seperator, identifier, operator, identifier, seperator, identifier, operator, real, seperator, keyword        
+    */
+    string temp;
+    while (lexerOutput >> temp)
+    {
+        // add the token to the token vector
+        token.push_back(temp);
 
-        // add the token and lexeme to the vectors
-        token.push_back(tempToken);
-        lexeme.push_back(tempLexeme);
-
-        // read the empty character
-        string empty;
-        getline(lexerOutput, empty, ' ');
+        // add the lexeme to the lexeme vector
+        lexerOutput >> temp;
+        lexeme.push_back(temp);
     }
+
+    // close the output file from the lexer
+    lexerOutput.close();
+
+    // add 2 empty characters to the end of the vectors to distinguish between the start and end of tokens/lexemes
+    token.push_back("");
+    token.push_back("");
+    lexeme.push_back("");
+    lexeme.push_back("");
+
+    // Debug: print out the token and lexeme vectors
+    tester();
 }
 
 // function that handles the errors
@@ -202,16 +213,16 @@ void closeSyntaxFile()
 
 // Debug function that tests if the correct strings were added to the vectors, by printing them out
 void tester()
-{  
+{
     // print out the token vector
-    cout << "Token vector: " << endl;
+    cout << "\nToken vector: " << endl;
     for (int i = 0; i < token.size(); i++)
     {
         cout << token[i] << endl;
     }
 
     // print out the lexeme vector
-    cout << "Lexeme vector: " << endl;
+    cout << "\nLexeme vector: " << endl;
     for (int i = 0; i < lexeme.size(); i++)
     {
         cout << lexeme[i] << endl;

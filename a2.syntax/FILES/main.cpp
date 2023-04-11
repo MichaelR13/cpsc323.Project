@@ -15,10 +15,10 @@ int main ()
     openFiles();    // Ask the user for the file names and open the files
     //initPrint();    // Print the header
     lexer();    // Run the lexer
-    endPrint(); // Print the footer
+    //endPrint(); // Print the footer
 
     // Syntax analyzer portion
-    tester();   // test the token and lexeme vectors
+    readToken();    // Read the output file from the lexer and convert into 2 vectors (token and lexeme)
     return 0;
 
 }
