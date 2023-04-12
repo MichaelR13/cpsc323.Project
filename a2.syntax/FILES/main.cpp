@@ -18,7 +18,9 @@ int main ()
     //endPrint(); // Print the footer
 
     // Syntax analyzer portion
+    openSyntaxFile();   // Open the output file from the lexer
     readToken();    // Read the output file from the lexer and convert into 2 vectors (token and lexeme)
+    closeSyntaxFile();  // Close the output file from the lexer
     return 0;
 
 }

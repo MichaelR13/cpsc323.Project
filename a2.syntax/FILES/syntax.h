@@ -20,38 +20,6 @@ Then, your program may exit or you may continue for further analysis.
 The bottom line is that your program must be able to parse the entire program if it is syntactically correct.
 */
 
-/* Example:
-
-code: a = b + c;
-
-possible output:
-
-    Token: Identifier Lexeme: a
-        <Statement> -> <Assign>
-        <Assign> -> <Identifier> = <Expression> ;
-
-    Token: Operator Lexeme: =
-
-    Token: Identifier Lexeme: b
-        <Expression> -> <Term> <Expression Prime>
-        <Term> -> <Factor> <Term Prime>
-        <Factor> -> <Identifier>
-
-    Token: Operator Lexeme: +
-        <Term Prime> -> epsilon
-        <Expression Prime> -> + <Term> <Expression Prime>
-
-    Token: Identifier Lexeme: c
-        <Term> -> <Factor> <Term Prime>
-        <Factor> -> <Identifier>
-    
-    Token: Separator Lexeme: ;
-        <Term Prime> -> epsilon
-        <Expression Prime> -> epsilon
-    
-    ..more...
-*/
-
 /* One Possible Example:
 
 Productions:
@@ -93,6 +61,74 @@ Procedure T();
 // NOTE: Only exit when there is a syntax error
 // 36 functions, Output is printf statements (in a debug way)
 
+/*
+Syntax rules : The following BNF describes the Rat23S. 
+R1. <Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List> 
+R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
+R3. <Function Definitions> ::= <Function> | <Function> <Function Definitions> 
+R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
+R6. <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
+R7. <Parameter> ::= <IDs > <Qualifier> 
+R8. <Qualifier> ::= int | bool | real 
+R9. <Body> ::= { < Statement List> }
+R10. <Opt Declaration List> ::= <Declaration List> | <Empty>
+R11. <Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>
+R12. <Declaration> ::= <Qualifier > <IDs> 
+R13. <IDs> ::= <Identifier> | <Identifier>, <IDs>
+R14. <Statement List> ::= <Statement> | <Statement> <Statement List>
+R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While> 
+R16. <Compound> ::= { <Statement List> } 
+R17. <Assign> ::= <Identifier> = <Expression> ;
+R18. <If> ::= if ( <Condition> ) <Statement> fi | 
+ if ( <Condition> ) <Statement> else <Statement> fi
+R19. <Return> ::= return ; | return <Expression> ;
+R21. <Print> ::= put ( <Expression>);
+1
+R21. <Scan> ::= get ( <IDs> );
+R22. <While> ::= while ( <Condition> ) <Statement> endwhile
+R23. <Condition> ::= <Expression> <Relop> <Expression>
+R24. <Relop> ::= == | != | > | < | <= | => 
+R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
+R27. <Factor> ::= - <Primary> | <Primary>
+R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | 
+ <Real> | true | false 
+R29. <Empty> ::= 
+Note: <Identifier>, <Integer>, <Real> are token types as defined in section (1) above
+*/
+
+/* Example:
+
+code: a = b + c;
+
+possible output:
+
+    Token: Identifier Lexeme: a
+        <Statement> -> <Assign>
+        <Assign> -> <Identifier> = <Expression> ;
+
+    Token: Operator Lexeme: =
+
+    Token: Identifier Lexeme: b
+        <Expression> -> <Term> <Expression Prime>
+        <Term> -> <Factor> <Term Prime>
+        <Factor> -> <Identifier>
+
+    Token: Operator Lexeme: +
+        <Term Prime> -> epsilon
+        <Expression Prime> -> + <Term> <Expression Prime>
+
+    Token: Identifier Lexeme: c
+        <Term> -> <Factor> <Term Prime>
+        <Factor> -> <Identifier>
+    
+    Token: Separator Lexeme: ;
+        <Term Prime> -> epsilon
+        <Expression Prime> -> epsilon
+    
+    ..more...
+*/
 #ifndef SYNTAX_H
 #define SYNTAX_H
 
@@ -110,8 +146,10 @@ Procedure T();
 using namespace std;
 
 // function prototypes
-void readToken();
-void errorHandling();
+void readToken();       // Read the token and lexeme from the lexer output file
+void leftRecursion();   // Remove left recursion from the grammar (use left factorization if needed)
+void errorHandler();    // Generate error messages for syntax errors
+void parser();          // Use a Recursive Descent Parser (RDP) to parse the input
 void syntax();
 void openSyntaxFile();
 void closeSyntaxFile();
@@ -120,8 +158,8 @@ void closeSyntaxFile();
 void tester();
 
 // Global variables
-ifstream lexerOutput;
-ofstream syntaxOutput;
+ifstream lexerOutput;   // input file
+ofstream syntaxOutput;  // output file
 vector<string> token;
 vector<string> lexeme;
 
@@ -140,12 +178,6 @@ a			identifier
 23.00			real
 ;			seperator
 endwhile			keyword
-
-lexeme vector:
-while, (, fahr, <=, upper, ), a, =, 23.00, ;, endwhile
-
-token vector:
-keyword, seperator, identifier, operator, identifier, seperator, identifier, operator, real, seperator, keyword
 
 */
 void readToken()
@@ -183,10 +215,8 @@ void readToken()
     // close the output file from the lexer
     lexerOutput.close();
 
-    // add 2 empty characters to the end of the vectors to distinguish between the start and end of tokens/lexemes
+    // add 2 empty strings to the end of the vectors, to distinguish between the start and end of tokens/lexemes
     token.push_back("");
-    token.push_back("");
-    lexeme.push_back("");
     lexeme.push_back("");
 
     // Debug: print out the token and lexeme vectors
@@ -202,30 +232,51 @@ void errorHandling()
 // function that opens the output file that will store the output of the syntax analyzer
 void openSyntaxFile()
 {
-    
+    string syntaxOutputFile;
+    cout << "Enter the name of the file you want to output to";
+    cout << " (include the file extension): ";
+    cin >> syntaxOutputFile; // cin >> outFile;
+
+    syntaxOutput.open(syntaxOutputFile);
+
+    if (!syntaxOutput.is_open())
+    {
+        cout << "Error opening syntax output file" << endl;
+        exit(0);
+    }
 }
 
 // function that closes the output file that will store the output of the syntax analyzer
 void closeSyntaxFile()
 {
-    
+    syntaxOutput.close();
+
+    if (syntaxOutput.is_open())
+    {
+        cout << "Error closing file" << endl;
+        exit(0);
+    }
 }
 
 // Debug function that tests if the correct strings were added to the vectors, by printing them out
 void tester()
 {
-    // print out the token vector
+    // print out the token vector and write to the output file
     cout << "\nToken vector: " << endl;
+    syntaxOutput << "\nToken vector: " << endl;
     for (int i = 0; i < token.size(); i++)
     {
         cout << token[i] << endl;
+        syntaxOutput << token[i] << endl;
     }
 
     // print out the lexeme vector
     cout << "\nLexeme vector: " << endl;
+    syntaxOutput << "\nLexeme vector: " << endl;
     for (int i = 0; i < lexeme.size(); i++)
     {
         cout << lexeme[i] << endl;
+        syntaxOutput << lexeme[i] << endl;
     }
 }
 

@@ -26,6 +26,7 @@ void lexer();
 ifstream fin;   // input file
 ofstream fout;  // output file
 
+
 // function that asks the user for a file name 
 
 void openFiles()    // This function will ask the user for the files name and then open the files
@@ -35,10 +36,8 @@ void openFiles()    // This function will ask the user for the files name and th
     cout << " (include the file extension): ";
     cin >> inFile;
     
-    string outFile;
-    cout << "Enter the name of the file you want to output to";
-    cout << " (include the file extension): ";
-    cin >> outFile;
+    // set outFile to lexerOutput.txt
+    string outFile = "lexerOutput.txt";
     
     fin.open(inFile);
     fout.open(outFile);
