@@ -148,7 +148,7 @@ using namespace std;
 // function prototypes
 void readToken();       // Read the token and lexeme from the lexer output file
 void leftRecursion();   // Remove left recursion from the grammar (use left factorization if needed)
-void errorHandler();    // Generate error messages for syntax errors
+void printSyntaxFile();    // Output of the syntax analysis (use printf statements) 
 void parser();          // Use a Recursive Descent Parser (RDP) to parse the input
 void syntax();
 void openSyntaxFile();
@@ -180,6 +180,37 @@ a			identifier
 endwhile			keyword
 
 */
+
+// function that opens the output file that will store the output of the syntax analyzer
+void openSyntaxFile()
+{
+    string syntaxOutputFile;
+    cout << "Enter the name of the file you want to output to";
+    cout << " (include the file extension): ";
+    cin >> syntaxOutputFile; // cin >> outFile;
+
+    syntaxOutput.open(syntaxOutputFile);
+
+    if (!syntaxOutput.is_open())
+    {
+        cout << "Error opening syntax output file" << endl;
+        exit(0);
+    }
+}
+
+// function that closes the output file that will store the output of the syntax analyzer
+void closeSyntaxFile()
+{
+    syntaxOutput.close();
+
+    if (syntaxOutput.is_open())
+    {
+        cout << "Error closing file" << endl;
+        exit(0);
+    }
+}
+
+// function that reads the output file from the lexer, and add the to token and lexeme vectors
 void readToken()
 {
     // open the output file from the lexer
@@ -223,39 +254,22 @@ void readToken()
     tester();
 }
 
-// function that handles the errors
-void errorHandling()
+// function that removes left recursion from the grammar (use left factorization if needed)
+void leftRecursion()
 {
     
 }
 
-// function that opens the output file that will store the output of the syntax analyzer
-void openSyntaxFile()
+// function that uses a Recursive Descent Parser (RDP) to parse the input
+void parser()
 {
-    string syntaxOutputFile;
-    cout << "Enter the name of the file you want to output to";
-    cout << " (include the file extension): ";
-    cin >> syntaxOutputFile; // cin >> outFile;
-
-    syntaxOutput.open(syntaxOutputFile);
-
-    if (!syntaxOutput.is_open())
-    {
-        cout << "Error opening syntax output file" << endl;
-        exit(0);
-    }
+    
 }
 
-// function that closes the output file that will store the output of the syntax analyzer
-void closeSyntaxFile()
+// function that outputs the syntax analysis (use printf statements)
+void printSyntaxFile()
 {
-    syntaxOutput.close();
-
-    if (syntaxOutput.is_open())
-    {
-        cout << "Error closing file" << endl;
-        exit(0);
-    }
+    
 }
 
 // Debug function that tests if the correct strings were added to the vectors, by printing them out
@@ -283,7 +297,23 @@ void tester()
 // main function for syntax analyzer
 void syntax()
 {
+    // Open the output file from the lexer
+    openSyntaxFile();   
     
+    // Read the output file from the lexer and convert into 2 vectors (token and lexeme)
+    readToken();
+
+    // Remove left recursion from the grammar (use left factorization if needed)
+    leftRecursion();
+
+    // Use a Recursive Descent Parser (RDP) to parse the input
+    parser();
+
+    // Output of the syntax analysis (use printf statements)
+    printSyntaxFile();
+
+    // Close the output file from the lexer
+    closeSyntaxFile();  
 }
 
 #endif
