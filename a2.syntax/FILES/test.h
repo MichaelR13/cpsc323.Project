@@ -169,9 +169,9 @@ ifstream lexerOutput;   // input file
 ofstream syntaxOutput;  // output file
 vector<string> token;
 vector<string> lexeme;
+vector<vector<string>> tokenLexeme;
 
 int tokCounter = -1;    // counter for the token vector
-int lexCounter = -1;    // counter for the lexeme vector
 
 // Function definitions
 
@@ -271,6 +271,18 @@ void tester()
 }
 
 // Helper functions
+void tokenLexemeVector()
+{
+    // add the token and lexeme vectors to a 2D vector (tokenLexeme)
+    for (int i = 0; i < token.size(); i++)
+    {
+        vector<string> temp;
+        temp.push_back(token[i]);
+        temp.push_back(lexeme[i]);
+        tokenLexeme.push_back(temp);
+    }
+}
+
 void setTokCounter(int num)
 {
     tokCounter = num;
@@ -283,7 +295,7 @@ int getTokCounter()
 
 vector <string> getTok()
 {
-    return token;
+    return tokenLexeme[tokCounter];
 }
 
 vector <string> getNextTok()
@@ -295,6 +307,7 @@ vector <string> getNextTok()
 // START OF RECURSIVE DESCENT PARSER
 bool Aprime()
 {
+    // Augment the grammar
     if (A())
     {
         return true;
@@ -1131,6 +1144,11 @@ void syntaxAnalyzer()
     {
         syntaxOutput << "Syntax Analyzer Complete" << endl;
         cout << "Syntax Analyzer Complete" << endl;
+    }
+    else
+    {
+        syntaxOutput << "Syntax Analyzer Failed" << endl;
+        cout << "Syntax Analyzer Failed" << endl;
     }
 }
 
