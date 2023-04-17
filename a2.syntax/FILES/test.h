@@ -286,13 +286,13 @@ bool A()
 {
     if (B())
     {
-        if (getNextTok()[0] == "Separator" && getTok()[1] == "%%")
+        if (getNextTok()[0] == "separator" && getTok()[1] == "%%")
         {
             if (J())
             {
                 if (N())
                 {
-                    if (getNextTok()[0] == "Separator" && getTok()[1] == "%%")
+                    if (getNextTok()[0] == "separator" && getTok()[1] == "%%")
                     {
 			            fout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
                         cout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
@@ -331,6 +331,244 @@ bool B()
 
 //
 bool C()
+{
+    if (D())
+    {
+        int tempTokCounter = getTokCounter();
+
+        if (C())
+        {
+            fout << "<Function Definitions> ::= <Function> <Function Definitions>" << endl;
+            cout << "<Function Definitions> ::= <Function> <Function Definitions>" << endl;
+            return true;
+        }
+        else
+        {
+            setTokCounter(tempTokCounter);
+            fout << "<Function Definitions> ::= <Function>" << endl;
+            cout << "<Function Definitions> ::= <Function>" << endl;
+            return true;
+        }
+    }
+}
+
+//
+bool D()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "function")
+    {
+        if (getNextTok()[0] == "identifier")
+        {
+            if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+            {
+                if (E())
+                {
+                    if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                    {
+                        if (J())
+                        {
+                            if (I())
+                            {
+                                fout << "<Function> ::= function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>" << endl;
+                                cout << "<Function> ::= function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>" << endl;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool E()
+{
+    int tempTokCounter = getTokCounter();
+
+    if (F())
+    {
+        fout << "<Opt Parameter List> ::= <Parameter List>" << endl;
+        cout << "<Opt Parameter List> ::= <Parameter List>" << endl;
+        return true;
+    }
+    else
+    {
+        setTokCounter(tempTokCounter);
+        fout << "<Opt Parameter List> ::= <Empty>" << endl;
+        cout << "<Opt Parameter List> ::= <Empty>" << endl;
+        return true;
+    }
+}
+
+//
+bool F()
+{
+    if (G())
+    {
+        int tempTokCounter = getTokCounter();
+        if (getNextTok()[0] == "separator" && getTok()[1] == ",")
+        {
+            if (F())
+            {
+                fout << "<Parameter List> ::= <Parameter> , <Parameter List>" << endl;
+                cout << "<Parameter List> ::= <Parameter> , <Parameter List>" << endl;
+                return true;
+            }
+        }
+        else
+        {
+            setTokCounter(tempTokCounter);
+            fout << "<Parameter List> ::= <Parameter>" << endl;
+            cout << "<Parameter List> ::= <Parameter>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool G()
+{
+    if (M())
+    {
+        if (H())
+        {
+            fout << "<Parameter> ::= <IDs > <Qualifier>" << endl;
+            cout << "<Parameter> ::= <IDs > <Qualifier>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool H()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "int")
+    {
+        fout << "<Qualifier> ::= int" << endl;
+        cout << "<Qualifier> ::= int" << endl;
+        return true;
+    }
+    else if (getNextTok()[0] == "keyword" && getTok()[1] == "bool")
+    {
+        fout << "<Qualifier> ::= bool" << endl;
+        cout << "<Qualifier> ::= bool" << endl;
+        return true;
+    }
+    else if (getNextTok()[0] == "keyword" && getTok()[1] == "real")
+    {
+        fout << "<Qualifier> ::= real" << endl;
+        cout << "<Qualifier> ::= real" << endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool I()
+{
+    if (getNextTok()[0] == "separator" && getTok()[1] == "{")
+    {
+        if (N())
+        {
+            if (getNextTok()[0] == "separator" && getTok()[1] == "}")
+            {
+                fout << "<Body> ::= { < Statement List> }" << endl;
+                cout << "<Body> ::= { < Statement List> }" << endl;
+                return true;
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool J()
+{
+    int tempTokCounter = getTokCounter();
+    if (K())
+    {
+        fout << "<Opt Declaration List> ::= <Declaration List>" << endl;
+        cout << "<Opt Declaration List> ::= <Declaration List>" << endl;
+        return true;
+    }
+
+    else
+    {
+        setTokCounter(tempTokCounter);
+        fout << "<Opt Declaration List> ::= <Empty>" << endl;
+        cout << "<Opt Declaration List> ::= <Empty>" << endl;
+        return true;
+    }
+}
+
+//
+bool K()
+{
+    if (L())
+    {
+        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        {
+            int tempTokCounter = getTokCounter();
+            if (K())
+            {
+                fout << "<Declaration List> := <Declaration> ; <Declaration List>" << endl;
+                cout << "<Declaration List> := <Declaration> ; <Declaration List>" << endl;
+                return true;
+            }
+            else
+            {
+                setTokCounter(tempTokCounter);
+                fout << "<Declaration List> := <Declaration> ;" << endl;
+                cout << "<Declaration List> := <Declaration> ;" << endl;
+                return true;
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool L()
+{
+    if (H())
+    {
+        if (M())
+        {
+            fout << "<Declaration> ::= <Qualifier > <IDs>" << endl;
+            cout << "<Declaration> ::= <Qualifier > <IDs>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool M()
 {
     
 }
