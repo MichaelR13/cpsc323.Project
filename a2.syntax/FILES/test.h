@@ -1125,13 +1125,12 @@ bool BB()
 
 void syntaxAnalyzer()
 {
+    // main syntax analyzer function, traverses every token/lexeme pair and provides production rules used
+    // print token and lexeme, and production rules used
     if (Aprime())
     {
-        cout << "Syntax is correct" << endl;
-    }
-    else
-    {
-        cout << "Syntax is incorrect" << endl;
+        syntaxOutput << "Syntax Analyzer Complete" << endl;
+        cout << "Syntax Analyzer Complete" << endl;
     }
 }
 
