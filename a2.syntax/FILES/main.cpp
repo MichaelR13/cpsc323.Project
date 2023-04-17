@@ -1,7 +1,6 @@
 // main program for the a2 syntax analyzer
 
 #include "lexer.h"
-#include "syntax.h"
 //test file
 #include "test.h"
 

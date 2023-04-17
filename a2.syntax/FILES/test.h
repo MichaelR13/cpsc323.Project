@@ -114,9 +114,55 @@ R32. <Empty> ::=
 #include <iomanip>
 
 #include "lexer.h"
-#include "syntax.h"
 
 using namespace std;
+
+// Function prototypes
+void openSyntaxFile();
+void closeSyntaxFile();
+void readToken();
+void tester();
+void syntaxAnalyzer();  // main syntax analyzer function
+
+// Helper functions
+void setTokCounter(int num);
+int getTokCounter();
+vector <string> getTok();
+vector <string> getNextTok();
+
+// Recursive descent parser functions
+bool Aprime();
+bool A();
+bool B();
+bool C();
+bool D();
+bool E();
+bool F();
+bool G();
+bool H();
+bool I();
+bool J();
+bool K();
+bool L();
+bool M();
+bool N();
+bool O();
+bool P();
+bool Q();
+bool R();
+bool S();
+bool T();
+bool U();
+bool V();
+bool W();
+bool X();
+bool Y();
+bool Yprime();
+bool Z();
+bool Zprime();
+bool AA();
+bool BB();
+
 
 // Global variables
 ifstream lexerOutput;   // input file
@@ -235,24 +281,9 @@ int getTokCounter()
     return tokCounter;
 }
 
-void setLexCounter(int num2)
-{
-    lexCounter = num2;
-}
-
-int getLexCounter()
-{
-    return lexCounter;
-}
-
 vector <string> getTok()
 {
     return token;
-}
-
-vector <string> getLex()
-{
-    return lexeme;
 }
 
 vector <string> getNextTok()
@@ -260,13 +291,6 @@ vector <string> getNextTok()
     tokCounter++;
     return getTok();
 }
-
-vector <string> getNextLex()
-{
-    lexCounter++;
-    return getLex();
-}
-
 
 // START OF RECURSIVE DESCENT PARSER
 bool Aprime()
@@ -294,7 +318,7 @@ bool A()
                 {
                     if (getNextTok()[0] == "seperator" && getTok()[1] == "%%")
                     {
-			            fout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
+			            syntaxOutput << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
                         cout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
                         return true;
                     }
@@ -315,7 +339,7 @@ bool B()
 
     if (C())
     {
-        fout << "<Opt Function Definitions> ::= <Function Definitions> " << endl;
+        syntaxOutput << "<Opt Function Definitions> ::= <Function Definitions> " << endl;
         cout << "<Opt Function Definitions> ::= <Function Definitions> " << endl;
         return true;
     }
@@ -323,7 +347,7 @@ bool B()
     else
     {
         setTokCounter(tempTokCounter);
-        fout << "<Opt Function Definitions> ::= <Empty> " << endl;
+        syntaxOutput << "<Opt Function Definitions> ::= <Empty> " << endl;
         cout << "<Opt Function Definitions> ::= <Empty> " << endl;
         return true;
     }
@@ -338,14 +362,14 @@ bool C()
 
         if (C())
         {
-            fout << "<Function Definitions> ::= <Function> <Function Definitions>" << endl;
+            syntaxOutput << "<Function Definitions> ::= <Function> <Function Definitions>" << endl;
             cout << "<Function Definitions> ::= <Function> <Function Definitions>" << endl;
             return true;
         }
         else
         {
             setTokCounter(tempTokCounter);
-            fout << "<Function Definitions> ::= <Function>" << endl;
+            syntaxOutput << "<Function Definitions> ::= <Function>" << endl;
             cout << "<Function Definitions> ::= <Function>" << endl;
             return true;
         }
@@ -369,7 +393,7 @@ bool D()
                         {
                             if (I())
                             {
-                                fout << "<Function> ::= function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>" << endl;
+                                syntaxOutput << "<Function> ::= function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>" << endl;
                                 cout << "<Function> ::= function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>" << endl;
                                 return true;
                             }
@@ -392,14 +416,14 @@ bool E()
 
     if (F())
     {
-        fout << "<Opt Parameter List> ::= <Parameter List>" << endl;
+        syntaxOutput << "<Opt Parameter List> ::= <Parameter List>" << endl;
         cout << "<Opt Parameter List> ::= <Parameter List>" << endl;
         return true;
     }
     else
     {
         setTokCounter(tempTokCounter);
-        fout << "<Opt Parameter List> ::= <Empty>" << endl;
+        syntaxOutput << "<Opt Parameter List> ::= <Empty>" << endl;
         cout << "<Opt Parameter List> ::= <Empty>" << endl;
         return true;
     }
@@ -415,7 +439,7 @@ bool F()
         {
             if (F())
             {
-                fout << "<Parameter List> ::= <Parameter> , <Parameter List>" << endl;
+                syntaxOutput << "<Parameter List> ::= <Parameter> , <Parameter List>" << endl;
                 cout << "<Parameter List> ::= <Parameter> , <Parameter List>" << endl;
                 return true;
             }
@@ -423,7 +447,7 @@ bool F()
         else
         {
             setTokCounter(tempTokCounter);
-            fout << "<Parameter List> ::= <Parameter>" << endl;
+            syntaxOutput << "<Parameter List> ::= <Parameter>" << endl;
             cout << "<Parameter List> ::= <Parameter>" << endl;
             return true;
         }
@@ -441,7 +465,7 @@ bool G()
     {
         if (H())
         {
-            fout << "<Parameter> ::= <IDs > <Qualifier>" << endl;
+            syntaxOutput << "<Parameter> ::= <IDs > <Qualifier>" << endl;
             cout << "<Parameter> ::= <IDs > <Qualifier>" << endl;
             return true;
         }
@@ -457,19 +481,19 @@ bool H()
 {
     if (getNextTok()[0] == "keyword" && getTok()[1] == "int")
     {
-        fout << "<Qualifier> ::= int" << endl;
+        syntaxOutput << "<Qualifier> ::= int" << endl;
         cout << "<Qualifier> ::= int" << endl;
         return true;
     }
     else if (getNextTok()[0] == "keyword" && getTok()[1] == "bool")
     {
-        fout << "<Qualifier> ::= bool" << endl;
+        syntaxOutput << "<Qualifier> ::= bool" << endl;
         cout << "<Qualifier> ::= bool" << endl;
         return true;
     }
     else if (getNextTok()[0] == "keyword" && getTok()[1] == "real")
     {
-        fout << "<Qualifier> ::= real" << endl;
+        syntaxOutput << "<Qualifier> ::= real" << endl;
         cout << "<Qualifier> ::= real" << endl;
         return true;
     }
@@ -488,7 +512,7 @@ bool I()
         {
             if (getNextTok()[0] == "seperator" && getTok()[1] == "}")
             {
-                fout << "<Body> ::= { < Statement List> }" << endl;
+                syntaxOutput << "<Body> ::= { < Statement List> }" << endl;
                 cout << "<Body> ::= { < Statement List> }" << endl;
                 return true;
             }
@@ -506,7 +530,7 @@ bool J()
     int tempTokCounter = getTokCounter();
     if (K())
     {
-        fout << "<Opt Declaration List> ::= <Declaration List>" << endl;
+        syntaxOutput << "<Opt Declaration List> ::= <Declaration List>" << endl;
         cout << "<Opt Declaration List> ::= <Declaration List>" << endl;
         return true;
     }
@@ -514,7 +538,7 @@ bool J()
     else
     {
         setTokCounter(tempTokCounter);
-        fout << "<Opt Declaration List> ::= <Empty>" << endl;
+        syntaxOutput << "<Opt Declaration List> ::= <Empty>" << endl;
         cout << "<Opt Declaration List> ::= <Empty>" << endl;
         return true;
     }
@@ -530,14 +554,14 @@ bool K()
             int tempTokCounter = getTokCounter();
             if (K())
             {
-                fout << "<Declaration List> := <Declaration> ; <Declaration List>" << endl;
+                syntaxOutput << "<Declaration List> := <Declaration> ; <Declaration List>" << endl;
                 cout << "<Declaration List> := <Declaration> ; <Declaration List>" << endl;
                 return true;
             }
             else
             {
                 setTokCounter(tempTokCounter);
-                fout << "<Declaration List> := <Declaration> ;" << endl;
+                syntaxOutput << "<Declaration List> := <Declaration> ;" << endl;
                 cout << "<Declaration List> := <Declaration> ;" << endl;
                 return true;
             }
@@ -556,7 +580,7 @@ bool L()
     {
         if (M())
         {
-            fout << "<Declaration> ::= <Qualifier > <IDs>" << endl;
+            syntaxOutput << "<Declaration> ::= <Qualifier > <IDs>" << endl;
             cout << "<Declaration> ::= <Qualifier > <IDs>" << endl;
             return true;
         }
@@ -579,7 +603,7 @@ bool M()
             {
                 if (getNextTok()[0] == "seperator" && getTok()[1] == "]")
                 {
-                    fout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
+                    syntaxOutput << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
                     cout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
                     return true;
                 }
@@ -588,7 +612,7 @@ bool M()
         else
         {
             setTokCounter(tempTokCounter);
-            fout << "<IDs> ::= <Identifier>" << endl;
+            syntaxOutput << "<IDs> ::= <Identifier>" << endl;
             cout << "<IDs> ::= <Identifier>" << endl;
             return true;
         }
@@ -605,14 +629,14 @@ bool N()
     int tempTokCounter = getTokCounter();
     if (O())
     {
-        fout << "<Statement List> ::= <Statement> <Statement List>" << endl;
+        syntaxOutput << "<Statement List> ::= <Statement> <Statement List>" << endl;
         cout << "<Statement List> ::= <Statement> <Statement List>" << endl;
         return true;
     }
     else
     {
         setTokCounter(tempTokCounter);
-        fout << "<Statement List> ::= <Empty>" << endl;
+        syntaxOutput << "<Statement List> ::= <Empty>" << endl;
         cout << "<Statement List> ::= <Empty>" << endl;
         return true;
     }
@@ -628,7 +652,7 @@ bool O()
         {
             if (O())
             {
-                fout << "<Statement> ::= <Compound>" << endl;
+                syntaxOutput << "<Statement> ::= <Compound>" << endl;
                 cout << "<Statement> ::= <Compound>" << endl;
                 return true;
             }
@@ -636,7 +660,7 @@ bool O()
         else
         {
             setTokCounter(tempTokCounter);
-            fout << "<Statement> ::= <Assign>" << endl;
+            syntaxOutput << "<Statement> ::= <Assign>" << endl;
             cout << "<Statement> ::= <Assign>" << endl;
             return true;
         }
@@ -656,7 +680,7 @@ bool P()
         {
             if (getNextTok()[0] == "seperator" && getTok()[1] == "}")
             {
-                fout << "<Compound> ::= { <Statement List> }" << endl;
+                syntaxOutput << "<Compound> ::= { <Statement List> }" << endl;
                 cout << "<Compound> ::= { <Statement List> }" << endl;
                 return true;
             }
@@ -679,7 +703,7 @@ bool Q()
             {
                 if(getNextTok()[0] == "seperator" && getTok()[1] == ";")
                 {
-                    fout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
+                    syntaxOutput << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
                     cout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
                     return true;
                 }
@@ -708,7 +732,7 @@ bool R()
                     {
                         if (getNextTok()[0] == "keyword" && getTok()[1] == "endif")
                         {
-                            fout << "<If> ::= if ( <Condition> ) <Statement> endif" << endl;
+                            syntaxOutput << "<If> ::= if ( <Condition> ) <Statement> endif" << endl;
                             cout << "<If> ::= if ( <Condition> ) <Statement> endif" << endl;
                             return true;
                         }
@@ -734,7 +758,7 @@ bool R()
                             {
                                 if (getNextTok()[0] == "keyword" && getTok()[1] == "endif")
                                 {
-                                    fout << "<If> ::= if ( <Condition> ) <Statement> else <Statement> endif" << endl;
+                                    syntaxOutput << "<If> ::= if ( <Condition> ) <Statement> else <Statement> endif" << endl;
                                     cout << "<If> ::= if ( <Condition> ) <Statement> else <Statement> endif" << endl;
                                     return true;
                                 }
@@ -760,14 +784,14 @@ bool S()
         {
             if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
             {
-                fout << "<Return> ::= return <Expression> ;" << endl;
+                syntaxOutput << "<Return> ::= return <Expression> ;" << endl;
                 cout << "<Return> ::= return <Expression> ;" << endl;
                 return true;
             }
         }
         if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
         {
-            fout << "<Return> ::= return ;" << endl;
+            syntaxOutput << "<Return> ::= return ;" << endl;
             cout << "<Return> ::= return ;" << endl;
             return true;
         }
@@ -791,7 +815,7 @@ bool T()
                 {
                     if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
                     {
-                        fout << "<Write> ::= put ( <Expression> );" << endl;
+                        syntaxOutput << "<Write> ::= put ( <Expression> );" << endl;
                         cout << "<Write> ::= put ( <Expression> );" << endl;
                         return true;
                     }
@@ -818,7 +842,7 @@ bool U()
                 {
                     if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
                     {
-                        fout << "<Read> ::= get ( <IDs> );" << endl;
+                        syntaxOutput << "<Read> ::= get ( <IDs> );" << endl;
                         cout << "<Read> ::= get ( <IDs> );" << endl;
                         return true;
                     }
@@ -847,7 +871,7 @@ bool V()
                     {
                         if (getNextTok()[0] == "keyword" && getTok()[1] == "endwhile")
                         {
-                            fout << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
+                            syntaxOutput << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
                             cout << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
                             return true;
                         }
@@ -869,7 +893,7 @@ bool W()
     {
         if (X())
         {
-            fout << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
+            syntaxOutput << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
             cout << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
             return true;
         }
@@ -885,7 +909,7 @@ bool X()
 {
     if (getNextTok()[0] == "operator" && (getTok()[1] == "==" || getTok()[1] == "^=" || getTok()[1] == ">" || getTok()[1] == "<" || getTok()[1] == "=>" || getTok()[1] == "=<"))
     {
-        fout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+        syntaxOutput << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
         cout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
         return true;
     }
@@ -922,7 +946,7 @@ bool Yprime()
         {
             if (Yprime())
             {
-                fout << "<Expression Prime> ::= + <Term> <Expression Prime>" << endl;
+                syntaxOutput << "<Expression Prime> ::= + <Term> <Expression Prime>" << endl;
                 cout << "<Expression Prime> ::= + <Term> <Expression Prime>" << endl;
                 return true;
             }
@@ -935,7 +959,7 @@ bool Yprime()
         {
             if (Yprime())
             {
-                fout << "<Expression Prime> ::= - <Term> <Expression Prime>" << endl;
+                syntaxOutput << "<Expression Prime> ::= - <Term> <Expression Prime>" << endl;
                 cout << "<Expression Prime> ::= - <Term> <Expression Prime>" << endl;
                 return true;
             }
@@ -945,7 +969,7 @@ bool Yprime()
     else
     {
         setTokCounter(tempTokCounter);
-        fout << "<Expression Prime> ::= <Empty>" << endl;
+        syntaxOutput << "<Expression Prime> ::= <Empty>" << endl;
         cout << "<Expression Prime> ::= <Empty>" << endl;
         return true;
     }
@@ -977,7 +1001,7 @@ bool Zprime()
         {
             if (Zprime())
             {
-                fout << "<Term Prime> ::= * <Factor> <Term Prime>" << endl;
+                syntaxOutput << "<Term Prime> ::= * <Factor> <Term Prime>" << endl;
                 cout << "<Term Prime> ::= * <Factor> <Term Prime>" << endl;
                 return true;
             }
@@ -990,7 +1014,7 @@ bool Zprime()
         {
             if (Zprime())
             {
-                fout << "<Term Prime> ::= / <Factor> <Term Prime>" << endl;
+                syntaxOutput << "<Term Prime> ::= / <Factor> <Term Prime>" << endl;
                 cout << "<Term Prime> ::= / <Factor> <Term Prime>" << endl;
                 return true;
             }
@@ -1000,7 +1024,7 @@ bool Zprime()
     else 
     {
         setTokCounter(tempTokCounter);
-        fout << "<Term Prime> ::= <Empty>" << endl;
+        syntaxOutput << "<Term Prime> ::= <Empty>" << endl;
         cout << "<Term Prime> ::= <Empty>" << endl;
         return true;
     }
@@ -1014,7 +1038,7 @@ bool AA()
     {
         if (BB())
         {
-            fout << "<Factor> ::= - <Primary>" << endl;
+            syntaxOutput << "<Factor> ::= - <Primary>" << endl;
             cout << "<Factor> ::= - <Primary>" << endl;
             return true;
         }
@@ -1022,7 +1046,7 @@ bool AA()
 
     if (BB())
     {
-        fout << "<Factor> ::= <Primary>" << endl;
+        syntaxOutput << "<Factor> ::= <Primary>" << endl;
         cout << "<Factor> ::= <Primary>" << endl;
         return true;
     }
@@ -1044,7 +1068,7 @@ bool BB()
             {
                 if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
-                    fout << "<Primary> ::= <Identifier> ( <IDs> )" << endl;
+                    syntaxOutput << "<Primary> ::= <Identifier> ( <IDs> )" << endl;
                     cout << "<Primary> ::= <Identifier> ( <IDs> )" << endl;
                     return true;
                 }
@@ -1054,14 +1078,14 @@ bool BB()
 
     if (getNextTok()[0] == "identifier")
     {
-        fout << "<Primary> ::= <Identifier>" << endl;
+        syntaxOutput << "<Primary> ::= <Identifier>" << endl;
         cout << "<Primary> ::= <Identifier>" << endl;
         return true;
     }
 
     if (getNextTok()[0] == "integer")
     {
-        fout << "<Primary> ::= <Integer>" << endl;
+        syntaxOutput << "<Primary> ::= <Integer>" << endl;
         cout << "<Primary> ::= <Integer>" << endl;
         return true;
     }
@@ -1072,7 +1096,7 @@ bool BB()
         {
             if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
             {
-                fout << "<Primary> ::= ( <Expression> )" << endl;
+                syntaxOutput << "<Primary> ::= ( <Expression> )" << endl;
                 cout << "<Primary> ::= ( <Expression> )" << endl;
                 return true;
             }
@@ -1081,14 +1105,14 @@ bool BB()
 
     if (getNextTok()[0] == "real")
     {
-        fout << "<Primary> ::= <Real>" << endl;
+        syntaxOutput << "<Primary> ::= <Real>" << endl;
         cout << "<Primary> ::= <Real>" << endl;
         return true;
     }
 
     if (getNextTok()[0] == "keyword" && (getTok()[1] == "true" || getTok()[1] == "false"))
     {
-        fout << "<Primary> ::= true" << endl;
+        syntaxOutput << "<Primary> ::= true" << endl;
         cout << "<Primary> ::= true" << endl;
         return true;
     }
