@@ -570,6 +570,406 @@ bool L()
 //
 bool M()
 {
+    if (getNextTok()[0] == "identifier")
+    {
+        int tempTokCounter = getTokCounter();
+        if (getNextTok()[0] == "separator" && getTok()[1] == "[")
+        {
+            if (getNextTok()[0] == "integer")
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == "]")
+                {
+                    fout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
+                    cout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            setTokCounter(tempTokCounter);
+            fout << "<IDs> ::= <Identifier>" << endl;
+            cout << "<IDs> ::= <Identifier>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool N()
+{
+    int tempTokCounter = getTokCounter();
+    if (O())
+    {
+        fout << "<Statement List> ::= <Statement> <Statement List>" << endl;
+        cout << "<Statement List> ::= <Statement> <Statement List>" << endl;
+        return true;
+    }
+    else
+    {
+        setTokCounter(tempTokCounter);
+        fout << "<Statement List> ::= <Empty>" << endl;
+        cout << "<Statement List> ::= <Empty>" << endl;
+        return true;
+    }
+}
+
+//
+bool O()
+{
+    if (P())
+    {
+        int tempTokCounter = getTokCounter();
+        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        {
+            if (O())
+            {
+                fout << "<Statement> ::= <Compound>" << endl;
+                cout << "<Statement> ::= <Compound>" << endl;
+                return true;
+            }
+        }
+        else
+        {
+            setTokCounter(tempTokCounter);
+            fout << "<Statement> ::= <Assign>" << endl;
+            cout << "<Statement> ::= <Assign>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool P()
+{
+    if (getNextTok()[0] == "seperator" && getTok()[1] == "{")
+    {
+        if (N())
+        {
+            if (getNextTok()[0] == "seperator" && getTok()[1] == "}")
+            {
+                fout << "<Compound> ::= { <Statement List> }" << endl;
+                cout << "<Compound> ::= { <Statement List> }" << endl;
+                return true;
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool Q()
+{
+    if (getNextTok()[0] == "identifier")
+    {
+        if (getNextTok()[0] == "operator" && getTok()[1] == "=")
+        {
+            if (Y())
+            {
+                if(getNextTok()[0] == "separator" && getTok()[1] == ";")
+                {
+                    fout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
+                    cout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
+                    return true;
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool R()
+{
+    int tempTokCounter = getTokCounter();
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "if")
+    {
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
+        {
+            if (W())
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                {
+                    if (O())
+                    {
+                        if (getNextTok()[0] == "keyword" && getTok()[1] == "endif")
+                        {
+                            fout << "<If> ::= if ( <Condition> ) <Statement> endif" << endl;
+                            cout << "<If> ::= if ( <Condition> ) <Statement> endif" << endl;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    setTokCounter(tempTokCounter);
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "if")
+    {
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
+        {
+            if (W())
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                {
+                    if (O())
+                    {
+                        if (getNextTok()[0] == "keyword" && getTok()[1] == "else")
+                        {
+                            if (O())
+                            {
+                                if (getNextTok()[0] == "keyword" && getTok()[1] == "endif")
+                                {
+                                    fout << "<If> ::= if ( <Condition> ) <Statement> else <Statement> endif" << endl;
+                                    cout << "<If> ::= if ( <Condition> ) <Statement> else <Statement> endif" << endl;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool S()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "return")
+    {
+        if (Y())
+        {
+            if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+            {
+                fout << "<Return> ::= return <Expression> ;" << endl;
+                cout << "<Return> ::= return <Expression> ;" << endl;
+                return true;
+            }
+        }
+        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        {
+            fout << "<Return> ::= return ;" << endl;
+            cout << "<Return> ::= return ;" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool T()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "put")
+    {
+        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        {
+            if (Y())
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                {
+                    if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+                    {
+                        fout << "<Write> ::= put ( <Expression> );" << endl;
+                        cout << "<Write> ::= put ( <Expression> );" << endl;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool U()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "get")
+    {
+        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        {
+            if (M())
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                {
+                    if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+                    {
+                        fout << "<Read> ::= get ( <IDs> );" << endl;
+                        cout << "<Read> ::= get ( <IDs> );" << endl;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool V()
+{
+    if (getNextTok()[0] == "keyword" && getTok()[1] == "while")
+    {
+        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        {
+            if (W())
+            {
+                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                {
+                    if (O())
+                    {
+                        if (getNextTok()[0] == "keyword" && getTok()[1] == "endwhile")
+                        {
+                            fout << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
+                            cout << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool W()
+{
+    if (Y())
+    {
+        if (X())
+        {
+            fout << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
+            cout << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool X()
+{
+    if (getNextTok()[0] == "operator" && (getTok()[1] == "==" || getTok()[1] == "^=" || getTok()[1] == ">" || getTok()[1] == "<" || getTok()[1] == "=>" || getTok()[1] == "=<"))
+    {
+        fout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+        cout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool Y()
+{
+    if (Z())
+    {
+        if (Yprime())
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool Yprime()
+{
+    int tempTokCounter = getTokCounter();
+
+    if (getNextTok()[0] == "operator" && getTok()[1] == "+")
+    {
+        if (Z())
+        {
+            if (Yprime())
+            {
+                fout << "<Expression Prime> ::= + <Term> <Expression Prime>" << endl;
+                cout << "<Expression Prime> ::= + <Term> <Expression Prime>" << endl;
+                return true;
+            }
+        }
+    }
+
+    else if (getNextTok()[0] == "operator" && getTok()[1] == "-")
+    {
+        if (Z())
+        {
+            if (Yprime())
+            {
+                fout << "<Expression Prime> ::= - <Term> <Expression Prime>" << endl;
+                cout << "<Expression Prime> ::= - <Term> <Expression Prime>" << endl;
+                return true;
+            }
+        }
+    }
+
+    else
+    {
+        setTokCounter(tempTokCounter);
+        fout << "<Expression Prime> ::= <Empty>" << endl;
+        cout << "<Expression Prime> ::= <Empty>" << endl;
+        return true;
+    }
+}
+
+//
+bool Z()
+{
+    if (AA())
+    {
+        if (Zprime())
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool Zprime()
+{
     
 }
 
