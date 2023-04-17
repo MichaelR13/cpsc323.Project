@@ -1099,4 +1099,16 @@ bool BB()
     }
 }
 
+void syntaxAnalyzer()
+{
+    if (Aprime())
+    {
+        cout << "Syntax is correct" << endl;
+    }
+    else
+    {
+        cout << "Syntax is incorrect" << endl;
+    }
+}
+
 #endif

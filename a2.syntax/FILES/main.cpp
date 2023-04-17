@@ -22,7 +22,8 @@ int main ()
     // Syntax analyzer portion
     openSyntaxFile(); // open syntax file
     readToken();     // convert lexer output to token and lexeme vectors
-    syntax();   // Run the syntax analyzer
+    //syntax();   // Run the syntax analyzer
+    syntaxAnalyzer(); // Run the syntax analyzer
     closeSyntaxFile(); // close syntax file
 
     return 0;
