@@ -94,7 +94,7 @@ R32. <Empty> ::=
         <Term> -> <Factor> <Term Prime>
         <Factor> -> <Identifier>
     
-    Token: Separator Lexeme: ;
+    Token: seperator Lexeme: ;
         <Term Prime> -> epsilon
         <Expression Prime> -> epsilon
     
@@ -286,13 +286,13 @@ bool A()
 {
     if (B())
     {
-        if (getNextTok()[0] == "separator" && getTok()[1] == "%%")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "%%")
         {
             if (J())
             {
                 if (N())
                 {
-                    if (getNextTok()[0] == "separator" && getTok()[1] == "%%")
+                    if (getNextTok()[0] == "seperator" && getTok()[1] == "%%")
                     {
 			            fout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
                         cout << "<Rat19F>  ::=   <Opt Function Definitions>   %%  <Opt Declaration List>  <Statement List>  %%" << endl;
@@ -359,11 +359,11 @@ bool D()
     {
         if (getNextTok()[0] == "identifier")
         {
-            if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+            if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
             {
                 if (E())
                 {
-                    if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                    if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                     {
                         if (J())
                         {
@@ -411,7 +411,7 @@ bool F()
     if (G())
     {
         int tempTokCounter = getTokCounter();
-        if (getNextTok()[0] == "separator" && getTok()[1] == ",")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == ",")
         {
             if (F())
             {
@@ -482,11 +482,11 @@ bool H()
 //
 bool I()
 {
-    if (getNextTok()[0] == "separator" && getTok()[1] == "{")
+    if (getNextTok()[0] == "seperator" && getTok()[1] == "{")
     {
         if (N())
         {
-            if (getNextTok()[0] == "separator" && getTok()[1] == "}")
+            if (getNextTok()[0] == "seperator" && getTok()[1] == "}")
             {
                 fout << "<Body> ::= { < Statement List> }" << endl;
                 cout << "<Body> ::= { < Statement List> }" << endl;
@@ -525,7 +525,7 @@ bool K()
 {
     if (L())
     {
-        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
         {
             int tempTokCounter = getTokCounter();
             if (K())
@@ -573,11 +573,11 @@ bool M()
     if (getNextTok()[0] == "identifier")
     {
         int tempTokCounter = getTokCounter();
-        if (getNextTok()[0] == "separator" && getTok()[1] == "[")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "[")
         {
             if (getNextTok()[0] == "integer")
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == "]")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == "]")
                 {
                     fout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
                     cout << "<IDs> ::= <Identifier> [ <Integer> ]" << endl;
@@ -624,7 +624,7 @@ bool O()
     if (P())
     {
         int tempTokCounter = getTokCounter();
-        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
         {
             if (O())
             {
@@ -677,7 +677,7 @@ bool Q()
         {
             if (Y())
             {
-                if(getNextTok()[0] == "separator" && getTok()[1] == ";")
+                if(getNextTok()[0] == "seperator" && getTok()[1] == ";")
                 {
                     fout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
                     cout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
@@ -702,7 +702,7 @@ bool R()
         {
             if (W())
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
                     if (O())
                     {
@@ -724,7 +724,7 @@ bool R()
         {
             if (W())
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
                     if (O())
                     {
@@ -758,14 +758,14 @@ bool S()
     {
         if (Y())
         {
-            if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+            if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
             {
                 fout << "<Return> ::= return <Expression> ;" << endl;
                 cout << "<Return> ::= return <Expression> ;" << endl;
                 return true;
             }
         }
-        if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
         {
             fout << "<Return> ::= return ;" << endl;
             cout << "<Return> ::= return ;" << endl;
@@ -783,13 +783,13 @@ bool T()
 {
     if (getNextTok()[0] == "keyword" && getTok()[1] == "put")
     {
-        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
         {
             if (Y())
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
-                    if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+                    if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
                     {
                         fout << "<Write> ::= put ( <Expression> );" << endl;
                         cout << "<Write> ::= put ( <Expression> );" << endl;
@@ -810,13 +810,13 @@ bool U()
 {
     if (getNextTok()[0] == "keyword" && getTok()[1] == "get")
     {
-        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
         {
             if (M())
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
-                    if (getNextTok()[0] == "separator" && getTok()[1] == ";")
+                    if (getNextTok()[0] == "seperator" && getTok()[1] == ";")
                     {
                         fout << "<Read> ::= get ( <IDs> );" << endl;
                         cout << "<Read> ::= get ( <IDs> );" << endl;
@@ -837,11 +837,11 @@ bool V()
 {
     if (getNextTok()[0] == "keyword" && getTok()[1] == "while")
     {
-        if (getNextTok()[0] == "separator" && getTok()[1] == "(")
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
         {
             if (W())
             {
-                if (getNextTok()[0] == "separator" && getTok()[1] == ")")
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
                 {
                     if (O())
                     {
@@ -970,7 +970,133 @@ bool Z()
 //
 bool Zprime()
 {
+    int tempTokCounter = getTokCounter();
+    if (getNextTok()[0] == "operator" && getTok()[1] == "*")
+    {
+        if (AA())
+        {
+            if (Zprime())
+            {
+                fout << "<Term Prime> ::= * <Factor> <Term Prime>" << endl;
+                cout << "<Term Prime> ::= * <Factor> <Term Prime>" << endl;
+                return true;
+            }
+        }
+    }
+
+    if (getNextTok()[0] == "operator" && getTok()[1] == "/")
+    {
+        if (AA())
+        {
+            if (Zprime())
+            {
+                fout << "<Term Prime> ::= / <Factor> <Term Prime>" << endl;
+                cout << "<Term Prime> ::= / <Factor> <Term Prime>" << endl;
+                return true;
+            }
+        }
+    }
+
+    else 
+    {
+        setTokCounter(tempTokCounter);
+        fout << "<Term Prime> ::= <Empty>" << endl;
+        cout << "<Term Prime> ::= <Empty>" << endl;
+        return true;
+    }
+}
+
+//
+bool AA()
+{
+    int tempTokCounter = getTokCounter();
+    if (getNextTok()[0] == "operator" && getTok()[1] == "-")
+    {
+        if (BB())
+        {
+            fout << "<Factor> ::= - <Primary>" << endl;
+            cout << "<Factor> ::= - <Primary>" << endl;
+            return true;
+        }
+    }
+
+    if (BB())
+    {
+        fout << "<Factor> ::= <Primary>" << endl;
+        cout << "<Factor> ::= <Primary>" << endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//
+bool BB()
+{
+    int tempTokCounter = getTokCounter();
+    if (getNextTok()[0] == "identifier")
+    {
+        if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
+        {
+            if (M())
+            {
+                if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
+                {
+                    fout << "<Primary> ::= <Identifier> ( <IDs> )" << endl;
+                    cout << "<Primary> ::= <Identifier> ( <IDs> )" << endl;
+                    return true;
+                }
+            }
+        }
+    }
+
+    if (getNextTok()[0] == "identifier")
+    {
+        fout << "<Primary> ::= <Identifier>" << endl;
+        cout << "<Primary> ::= <Identifier>" << endl;
+        return true;
+    }
+
+    if (getNextTok()[0] == "integer")
+    {
+        fout << "<Primary> ::= <Integer>" << endl;
+        cout << "<Primary> ::= <Integer>" << endl;
+        return true;
+    }
+
+    if (getNextTok()[0] == "seperator" && getTok()[1] == "(")
+    {
+        if (Y())
+        {
+            if (getNextTok()[0] == "seperator" && getTok()[1] == ")")
+            {
+                fout << "<Primary> ::= ( <Expression> )" << endl;
+                cout << "<Primary> ::= ( <Expression> )" << endl;
+                return true;
+            }
+        }
+    }
+
+    if (getNextTok()[0] == "real")
+    {
+        fout << "<Primary> ::= <Real>" << endl;
+        cout << "<Primary> ::= <Real>" << endl;
+        return true;
+    }
+
+    if (getNextTok()[0] == "keyword" && (getTok()[1] == "true" || getTok()[1] == "false"))
+    {
+        fout << "<Primary> ::= true" << endl;
+        cout << "<Primary> ::= true" << endl;
+        return true;
+    }
     
+    else
+    {
+        return false;
+    }
 }
 
 #endif
