@@ -2,6 +2,8 @@
 
 #include "lexer.h"
 #include "syntax.h"
+//test file
+#include "test.h"
 
 #include <iostream>
 #include <string>
