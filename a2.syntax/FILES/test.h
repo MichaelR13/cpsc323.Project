@@ -305,6 +305,20 @@ vector <string> getNextTok()
     return getTok();
 }
 
+// function that prints the token and lexeme pairs used in the production rules, then removes them
+// from the token and lexeme vectors
+void vectorRemover()
+{
+    // print the token and lexeme pairs used in the production rules
+    cout << "Token: " << token[tokCounter] << " Lexeme: " << lexeme[tokCounter] << endl;
+    syntaxOutput << "Token: " << token[tokCounter] << " Lexeme: " << lexeme[tokCounter] << endl;
+
+    // remove the token and lexeme pairs used in the production rules
+    token.erase(token.begin() + tokCounter);
+    lexeme.erase(lexeme.begin() + tokCounter);
+}
+
+
 // START OF RECURSIVE DESCENT PARSER
 bool Aprime()
 {
@@ -1074,13 +1088,16 @@ bool BB()
 
 void syntaxAnalyzer()
 {
-    if (A())
+    while (getNextTok()[0] != "EOF")
     {
-        cout << "Syntax is correct" << endl;
-    }
-    else
-    {
-        cout << "Syntax is incorrect" << endl;
+        if (Aprime())
+        {
+            cout << "Syntax is correct" << endl;
+        }
+        else
+        {
+            cout << "Syntax is incorrect" << endl;
+        }
     }
 }
 
