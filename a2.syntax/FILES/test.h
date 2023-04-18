@@ -169,7 +169,7 @@ ifstream lexerOutput;   // input file
 ofstream syntaxOutput;  // output file
 vector<string> token;
 vector<string> lexeme;
-vector<vector<string>> tokenLexeme;
+// vector<vector<string>> tokenLexeme;
 
 int tokCounter = -1;    // counter for the token vector
 
@@ -271,6 +271,7 @@ void tester()
 }
 
 // Helper functions
+/*
 void tokenLexemeVector()
 {
     // add the token and lexeme vectors to a 2D vector (tokenLexeme)
@@ -282,7 +283,7 @@ void tokenLexemeVector()
         tokenLexeme.push_back(temp);
     }
 }
-
+*/
 void setTokCounter(int num)
 {
     tokCounter = num;
@@ -295,7 +296,7 @@ int getTokCounter()
 
 vector <string> getTok()
 {
-    return tokenLexeme[tokCounter];
+    return {token[tokCounter], lexeme[tokCounter]};
 }
 
 vector <string> getNextTok()
