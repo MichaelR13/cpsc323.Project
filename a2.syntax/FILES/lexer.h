@@ -25,6 +25,7 @@ bool checkArr(char value, char* array, int size);
 string intRealFSM(char num);
 string isKeyword(char buf[]);
 void lexer();
+void lexicalAnalyzer();
 
 // global variables
 ifstream fin;   // input file
@@ -350,6 +351,13 @@ vector<TokenType> parseTokens(ifstream &testInput)
 
     return tokens;
     testInput.close();
+}
+
+void lexicalAnalyzer()
+{
+    openFiles();
+    vector<TokenType> tokens = parseTokens(testInput);
+    lexer();
 }
 
 #endif

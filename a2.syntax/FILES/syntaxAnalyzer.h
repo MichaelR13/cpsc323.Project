@@ -77,7 +77,6 @@ void syntaxAnalyzer();  // main syntax analyzer function
 // Global variables
 ifstream lexerOutput;   // input file
 ofstream syntaxOutput;  // output file for the syntax analyzer
-string outFile = "lexerOutput.txt"; // output file from the lexer
 string syntaxOutputFile; // output file for the syntax analyzer
 TokenType currentToken; // current token
 int tokenCounter = 0;   // token counter
@@ -90,6 +89,7 @@ vector<TokenType> tokens = parseTokens(lexerOutput);
 
 class SA
 {
+public:
 void Rat23S();
 void OptFunctionDefinitions();
 void FunctionDefinitions();
@@ -155,7 +155,11 @@ void closeSyntaxFile()
 
 // main syntax analyzer function 
 void syntaxAnalyzer()
-{    
+{
+    openSyntaxFile();
+    SA sa;
+    sa.Rat23S();
+    closeSyntaxFile();   
 }
 
 // helper function
@@ -811,5 +815,149 @@ void SA::While()
     }
 }
 
+void SA::Condition()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
+        cout << "<Condition> ::= <Expression> <Relop> <Expression>" << endl;
+    }
+    Expression();
+    Relop();
+    Expression();
+}
+
+void SA::Relop()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+        cout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+    }
+    if (currentToken.lexeme == "==" || currentToken.lexeme == "^=" || currentToken.lexeme == ">" || currentToken.lexeme == "<" || currentToken.lexeme == "=>" || currentToken.lexeme == "=<")
+    {
+        GetNextToken();
+    }
+    else
+    {
+        syntaxOutput << "Syntax error; Expected '==' or '^=' or '>' or '<' or '=>' or '=<' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected '==' or '^=' or '>' or '<' or '=>' or '=<' before '" << currentToken.lexeme << "'" << endl;
+        exit(1);
+    }
+}
+
+void SA::Expression()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>" << endl;
+        cout << "<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>" << endl;
+    }
+    Term();
+    while (currentToken.lexeme == "+" || currentToken.lexeme == "-")
+    {
+        GetNextToken();
+        Term();
+    }
+}
+
+void SA::Term()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>" << endl;
+        cout << "<Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>" << endl;
+    }
+    Factor();
+    while (currentToken.lexeme == "*" || currentToken.lexeme == "/")
+    {
+        GetNextToken();
+        Factor();
+    }
+}
+
+void SA::Factor()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Factor> ::= - <Primary> | <Primary>" << endl;
+        cout << "<Factor> ::= - <Primary> | <Primary>" << endl;
+    }
+    if (currentToken.lexeme == "-")
+    {
+        GetNextToken();
+    }
+    Primary();
+}
+
+void SA::Primary()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
+        cout << "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
+    }
+    if (currentToken.token == "Identifier")
+    {
+        GetNextToken();
+        if (currentToken.lexeme == "(")
+        {
+            GetNextToken();
+            IDs();
+            if (currentToken.lexeme == ")")
+            {
+                GetNextToken();
+            }
+            else
+            {
+                syntaxOutput << "Syntax error; Expected ')' before '" << currentToken.lexeme << "'" << endl;
+                cout << "Syntax error; Expected ')' before '" << currentToken.lexeme << "'" << endl;
+                exit(1);
+            }
+        }
+    }
+    else if (currentToken.token == "Integer")
+    {
+        GetNextToken();
+    }
+    else if (currentToken.lexeme == "(")
+    {
+        GetNextToken();
+        Expression();
+        if (currentToken.lexeme == ")")
+        {
+            GetNextToken();
+        }
+        else
+        {
+            syntaxOutput << "Syntax error; Expected ')' before '" << currentToken.lexeme << "'" << endl;
+            cout << "Syntax error; Expected ')' before '" << currentToken.lexeme << "'" << endl;
+            exit(1);
+        }
+    }
+    else if (currentToken.token == "Real")
+    {
+        GetNextToken();
+    }
+    else if (currentToken.lexeme == "true" || currentToken.lexeme == "false")
+    {
+        GetNextToken();
+    }
+    else
+    {
+        syntaxOutput << "Syntax error; Expected 'Identifier' or 'Integer' or 'Identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected 'Identifier' or 'Integer' or 'Identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
+        exit(1);
+    }
+}
+
+void SA::Empty()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Empty> ::= ε" << endl;
+        cout << "<Empty> ::= ε" << endl;
+    }
+}
 
 #endif
