@@ -10,6 +10,10 @@
 #include <ctype.h>
 #include <string>
 #include <string.h>
+#include <iomanip>
+#include <cstdlib>
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -25,9 +29,15 @@ void lexer();
 // global variables
 ifstream fin;   // input file
 ofstream fout;  // output file
+ifstream testInput; // read from test file
 
-
-// function that asks the user for a file name 
+// Parse the output file from the lexer into a struct named TokenType
+struct TokenType
+{
+    string token;
+    string lexeme;
+    int lineNum;
+};
 
 void openFiles()    // This function will ask the user for the files name and then open the files
 {
@@ -45,6 +55,15 @@ void openFiles()    // This function will ask the user for the files name and th
     if (!fin.is_open() || !fout.is_open())
     {
         cout << "Error opening file" << endl;
+        exit(0);
+    }
+
+    // open lexer output as input file
+    testInput.open("lexerOutput.txt");
+
+    if (!testInput.is_open())
+    {
+        cout << "Error opening lexer output file" << endl;
         exit(0);
     }
 }
@@ -303,6 +322,34 @@ void lexer()
     // Close the files
     fin.close();
     fout.close();
+}
+
+// parseTokens should return the vector of tokens to be used globally in syntaxAnalyzer
+vector<TokenType> parseTokens(ifstream &testInput)
+{
+    // Test
+    cout << "Parsing Tokens..." << endl;
+    // Store Token/lexeme pairs in a vector
+    vector<TokenType> tokens;
+    string line;
+    int lineNum = 1;
+
+    while (getline(testInput, line))
+    {
+        size_t pos = line.find("\t");
+        string lexeme = line.substr(0, pos);
+        string token = line.substr(pos + 1);
+        tokens.push_back({token, lexeme, lineNum});
+        lineNum++;
+    }
+
+    for (TokenType token : tokens)
+    {
+        cout << token.lexeme << "\t" << token.token << endl;
+    }
+
+    return tokens;
+    testInput.close();
 }
 
 #endif

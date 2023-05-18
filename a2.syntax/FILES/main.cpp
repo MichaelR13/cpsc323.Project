@@ -1,30 +1,29 @@
 // main program for the a2 syntax analyzer
 
-#include "lexer.h"
-//test file
-#include "test.h"
-
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <string>
 
+#include "lexer.h"
+#include "syntaxAnalyzer.h"
+
+using namespace std;
+
+
 int main ()
 {
-    // Lexer portion
-    // Read file and tokenize to output text file
+    openFiles();
+    lexer();
+    parseTokens();
+    /*
     openFiles();    // Ask the user for the file names and open the files
-    //initPrint();    // Print the header
-    lexer();    // Run the lexer
-    //endPrint(); // Print the footer
-
-    // Syntax analyzer portion
     openSyntaxFile(); // open syntax file
-    readToken();     // convert lexer output to token and lexeme vectors
-    //syntax();   // Run the syntax analyzer
-    syntaxAnalyzer(); // Run the syntax analyzer
-    closeSyntaxFile(); // close syntax file
+    lexer();    // Run the lexer
+    parseTokens();  // Parse the tokens
 
+    closeSyntaxFile(); // close syntax file
+    */
     return 0;
 
 }
