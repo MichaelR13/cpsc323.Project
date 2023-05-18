@@ -49,8 +49,7 @@ using namespace std;
 // Function prototypes
 void openSyntaxFile();
 void closeSyntaxFile();
-void parseTokens();
-
+void printRules();
 // main syntax analyzer function prototypes
 void syntaxAnalyzer();  // main syntax analyzer function
 
@@ -129,6 +128,38 @@ void closeSyntaxFile()
         cout << "Error closing file" << endl;
         exit(0);
     }
+}
+
+// function that prints and writes the rules to the syntax analyzer output file
+void printRules()
+{
+    // sample output:
+    /*
+    source code: a = b + c;
+
+    output:
+    Token: Identifier Lexeme: a
+        <Statement> -> <Assign>
+        <Assign> -> <Identifier> = <Expression> ;
+    Token: Operator Lexeme: =
+    Token: Identifier Lexeme: b
+        <Expression> -> <Expression> + <Term>
+        <Term> -> <Factor>
+        <Factor> -> <Primary>
+        <Primary> -> <Identifier>
+    Token: Operator Lexeme: +
+    Token: Identifier Lexeme: c
+        <Term> -> <Factor>
+        <Factor> -> <Primary>
+        <Primary> -> <Identifier>
+    Token: Seperator Lexeme: ;
+        <Term> -> <Factor>
+        <Factor> -> <Primary>
+        <Primary> -> <Identifier>
+        <Statement> -> <Assign>
+        <Assign> -> <Identifier> = <Expression> ;
+        
+    */ 
 }
 
 // main syntax analyzer functions
