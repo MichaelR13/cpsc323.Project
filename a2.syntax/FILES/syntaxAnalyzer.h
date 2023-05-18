@@ -17,34 +17,14 @@ R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> 
 R16. <Compound> ::= { <Statement List> } 
 R17. <Assign> ::= <Identifier> = <Expression> ;
 R18. <If> ::= if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
-
-
-// endif is replaced by fi, in R18
-
-
 R19. <Return> ::= return ; | return <Expression> ;
 R20. <Print> ::= put ( <Expression>);
 R21. <Scan> ::= get ( <IDs> );
 R22. <While> ::= while ( <Condition> ) <Statement> endwhile
-
-
-// endwhile is added to R22
-
-
 R23. <Condition> ::= <Expression> <Relop> <Expression>
 R24. <Relop> ::= == | != | > | < | <= | => 
-
-
-// ^= is replaced by !=, in R24
-
-
-// R25 removed: <Expression> -> <Term> <Expression Prime>
-// R27 removed: <Term> -> <Factor> <TermPrime>
-
 R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
 R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
-
-
 R27. <Factor> ::= - <Primary> | <Primary>
 R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false 
 R29. <Empty> ::= <epsilon>

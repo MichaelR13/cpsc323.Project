@@ -4,6 +4,3 @@ b			identifier
 +			seperator
 c			identifier
 ;			seperator
-
-
-token.lexeme    token.token
