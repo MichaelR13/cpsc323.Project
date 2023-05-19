@@ -470,7 +470,7 @@ void SA::StatementList()
         syntaxOutput << "<Statement List> ::= <Statement> | <Statement> <Statement List>" << endl;
         cout << "<Statement List> ::= <Statement> | <Statement> <Statement List>" << endl;
     }
-    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "put" || currentToken.lexeme == "get" || currentToken.token == "identifier" || currentToken.lexeme == "{")
+    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "put" || currentToken.lexeme == "get" || currentToken.token == "identifier" || currentToken.token == "function" || currentToken.token == "while" || currentToken.lexeme == "{")
     {
         Statement();
     }
