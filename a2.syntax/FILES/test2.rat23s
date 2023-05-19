@@ -1,0 +1,28 @@
+function age()
+{
+    while (true)
+    {
+        put("Hello, world!");
+        string name;
+        int age, birthYear1, birthYear2;
+        put("What is your name? ");
+        get(name);
+        put("How old are you? ");
+        get(age);
+        birthYear1 = 2023 - age;
+        birthYear2 = 2022 - age;
+        put("You were born in ");
+        put(birthYear1);
+        put(" or ");
+        put(birthYear2);
+        put("\n");
+        put("Do you want to continue? (y/n) ");
+        char answer;
+        get(answer);
+        if (answer == 'n')
+        {
+            break;
+        }
+    }
+    return 0;
+} #

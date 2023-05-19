@@ -1,0 +1,23 @@
+
+Token: identifier          Lexeme: function            
+<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+<Function Definitions> ::= <Function> | <Function> <Function Definitions>
+<Function> ::= function <identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+
+Token: identifier          Lexeme: age                 
+
+Token: seperator           Lexeme: (                   
+
+Token: seperator           Lexeme: )                   
+<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Empty> ::= epsilon
+
+Token: seperator           Lexeme: {                   
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty> ::= epsilon
+<Body> ::= { < Statement List> }
+
+Token: keyword             Lexeme: while               
+<Statement List> ::= <Statement> | <Statement> <Statement List>
+Syntax error; Expected '}' before 'while'
