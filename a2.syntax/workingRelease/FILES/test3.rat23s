@@ -1,0 +1,33 @@
+function calculator()
+{
+    char ch;
+    real a, b;
+    while (true)
+    {
+        put("Enter an operator or x to exit");
+        get(ch);
+        if (ch == 'x')
+            exit(0);
+        put("Enter the first and second operand");
+        get(a);
+        get(b);
+        switch (ch)
+        {
+            case '+':
+                put(a + " + " + b + " = " + (a + b));
+                break;
+            case '-':
+                put(a + " - " + b + " = " + (a - b));
+                break;
+            case '*':
+                put(a + " * " + b + " = " + (a * b));
+                break;
+            case '/':
+                put(a + " / " + b + " = " + (a / b));
+                break;
+            default:
+                put("Error, please write a valid operator");
+        }
+    }
+    return 0;
+}

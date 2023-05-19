@@ -1,0 +1,27 @@
+
+Token: identifier          Lexeme: function            
+<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+<Function Definitions> ::= <Function> | <Function> <Function Definitions>
+<Function> ::= function <identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+
+Token: identifier          Lexeme: calculator          
+
+Token: seperator           Lexeme: (                   
+
+Token: seperator           Lexeme: )                   
+<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Empty> ::= epsilon
+
+Token: seperator           Lexeme: {                   
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty> ::= epsilon
+<Body> ::= { < Statement List> }
+
+Token: identifier          Lexeme: char                
+<Statement List> ::= <Statement> | <Statement> <Statement List>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan>
+<Assign> ::= <identifier> = <Expression> ;
+
+Token: identifier          Lexeme: ch                  
+Syntax error; Expected '=' or ';' before 'ch'

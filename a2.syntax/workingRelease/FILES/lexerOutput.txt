@@ -1,0 +1,15 @@
+function			identifier
+main			identifier
+(			seperator
+)			seperator
+{			seperator
+a			identifier
+=			operator
+b			identifier
++			seperator
+c			identifier
+;			seperator
+return			identifier
+;			seperator
+}			seperator
+#			seperator
