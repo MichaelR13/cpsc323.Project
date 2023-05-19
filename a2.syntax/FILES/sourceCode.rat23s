@@ -1,1 +1,20 @@
-a = b + c;
+function calculateAverage(nums int) {
+    sum = 0;
+    count = 0;
+    
+    while (count < nums) {
+        get(input);
+        sum = sum + input;
+        count = count + 1;
+    }
+    
+    average = sum / nums;
+    put(average);
+    return;
+}
+
+function main() {
+    size = 5;
+    calculateAverage(size);
+    return;
+}

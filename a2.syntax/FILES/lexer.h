@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <vector>
 #include <map>
+#include <sstream>
 
 using namespace std;
 
@@ -37,7 +38,6 @@ struct TokenType
 {
     string token;
     string lexeme;
-    int lineNum;
 };
 
 void openFiles()    // This function will ask the user for the files name and then open the files
@@ -328,27 +328,17 @@ void lexer()
 // parseTokens should return the vector of tokens to be used globally in syntaxAnalyzer
 vector<TokenType> parseTokens(ifstream &testInput)
 {
-    // Test
-    cout << "Parsing Tokens..." << endl;
     // Store Token/lexeme pairs in a vector
     vector<TokenType> tokens;
     string line;
-    int lineNum = 1;
-
+    
     while (getline(testInput, line))
     {
-        size_t pos = line.find("\t");
-        string lexeme = line.substr(0, pos);
-        string token = line.substr(pos + 1);
-        tokens.push_back({token, lexeme, lineNum});
-        lineNum++;
+    istringstream iss(line);
+    string lexeme, token;
+    iss >> lexeme >> token;
+    tokens.push_back({token, lexeme});
     }
-
-    for (TokenType token : tokens)
-    {
-        cout << token.lexeme << "\t" << token.token << endl;
-    }
-
     return tokens;
     testInput.close();
 }

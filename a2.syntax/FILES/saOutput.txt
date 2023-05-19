@@ -1,3 +1,0 @@
-<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>
-<Opt Function Definitions> ::= <Function Definitions> | <Empty>
-Syntax error; Expected 'function' or '%%' before ''

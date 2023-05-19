@@ -2,7 +2,7 @@
 R1. <Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List> 
 R2. <Opt Function Definitions> ::= <Function Definitions> | <Empty>
 R3. <Function Definitions> ::= <Function> | <Function> <Function Definitions> 
-R4. <Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+R4. <Function> ::= function <identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
 R5. <Opt Parameter List> ::= <Parameter List> | <Empty>
 R6. <Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>
 R7. <Parameter> ::= <IDs > <Qualifier> 
@@ -11,11 +11,11 @@ R9. <Body> ::= { < Statement List> }
 R10. <Opt Declaration List> ::= <Declaration List> | <Empty>
 R11. <Declaration List> := <Declaration> ; | <Declaration> ; <Declaration List>
 R12. <Declaration> ::= <Qualifier > <IDs> 
-R13. <IDs> ::= <Identifier> | <Identifier>, <IDs>
+R13. <IDs> ::= <identifier> | <identifier>, <IDs>
 R14. <Statement List> ::= <Statement> | <Statement> <Statement List>
 R15. <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While> 
 R16. <Compound> ::= { <Statement List> } 
-R17. <Assign> ::= <Identifier> = <Expression> ;
+R17. <Assign> ::= <identifier> = <Expression> ;
 R18. <If> ::= if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
 R19. <Return> ::= return ; | return <Expression> ;
 R20. <Print> ::= put ( <Expression>);
@@ -26,7 +26,7 @@ R24. <Relop> ::= == | != | > | < | <= | =>
 R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>    // use new rule below
 R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>                // use new rule below
 R27. <Factor> ::= - <Primary> | <Primary>
-R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false 
+R28. <Primary> ::= <identifier> | <Integer> | <identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false 
 R29. <Empty> ::= <epsilon>
 
 Removed Left Recursion / Backtracking:
@@ -56,7 +56,7 @@ using namespace std;
 // Function prototypes
 void openSyntaxFile();
 void closeSyntaxFile();
-void printRules();
+void tokenListHelper(ifstream& lexerOutput);
 // main syntax analyzer function prototypes
 void syntaxAnalyzer();  // main syntax analyzer function
 
@@ -64,6 +64,8 @@ void syntaxAnalyzer();  // main syntax analyzer function
 ifstream lexerOutput;   // input file
 ofstream syntaxOutput;  // output file for the syntax analyzer
 string syntaxOutputFile; // output file for the syntax analyzer
+
+vector<TokenType> tokenList; 
 TokenType currentToken; // current token
 int tokenCounter = 0;   // token counter
 bool printSwitch = true;
@@ -140,52 +142,40 @@ void closeSyntaxFile()
     }
 }
 
-// function that prints and writes the rules to the syntax analyzer output file
-void printRules()
-{
-    // sample output:
-    /*
-    source code: a = b + c;
-
-    output:
-    Token: Identifier Lexeme: a
-        <Statement> -> <Assign>
-        <Assign> -> <Identifier> = <Expression> ;
-    Token: Operator Lexeme: =
-    Token: Identifier Lexeme: b
-        <Expression> -> <Term> <ExpressionPrime>
-        <Term> -> <Factor> <TermPrime>
-        <Factor> -> <Identifier>
-    Token: Operator Lexeme: +
-        <TermPrime> -> <Empty>
-        <ExpressionPrime> -> + <Term> <ExpressionPrime>
-    Token: Identifier Lexeme: c
-        <Term> -> <Factor> <TermPrime>
-        <Factor> -> <Identifier>
-    Token: Separator Lexeme: ;
-        <TermPrime> -> <Empty>
-        <ExpressionPrime> -> <Empty>
-    */ 
-}
-
 // main syntax analyzer functions
 
 // main syntax analyzer function 
 void syntaxAnalyzer()
 {
+    ifstream lexerOutput("lexerOutput.txt");
+    
+    if (!lexerOutput.is_open())
+    {
+        cout << "Error opening lexer output file" << endl;
+        return;
+    }
+
+    tokenListHelper(lexerOutput);
     openSyntaxFile();
     SA sa;
     sa.Rat23S();
-    closeSyntaxFile();   
+    closeSyntaxFile();
+
+    lexerOutput.close();
 }
 
 // helper function
 
+void tokenListHelper(ifstream& lexerOutput)
+{
+    tokenList = parseTokens(lexerOutput);
+}
+
 void SA::GetNextToken()
 {
-    if (tokenCounter < tokens.size())
+    if (tokenCounter < tokenList.size())
     {
-        currentToken = tokens[tokenCounter];
+        currentToken = tokenList[tokenCounter];
         if (printSwitch)
         {
             syntaxOutput << "\nToken: " << left << setw(20) << currentToken.token << left << setw(8) << "Lexeme: " << left << setw(20) << currentToken.lexeme << endl;
@@ -203,23 +193,23 @@ void SA::Rat23S()
     if (printSwitch)
     {
         syntaxOutput << "<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>" << endl;
+        cout << "<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>" << endl;
     }
 
     OptFunctionDefinitions();
 
-    if (currentToken.lexeme == "%%")
+    if (currentToken.lexeme == "#")
     {
         GetNextToken();
         OptDeclarationList();
         StatementList();
-        syntaxOutput << "Syntax analysis complete" << endl;
-        cout << "Syntax analysis complete" << endl;
+        syntaxOutput << "Syntax Accepted" << endl;
+        cout << "Syntax Accepted" << endl;
     }
     else
     {
-        syntaxOutput << "Syntax error; Expected this %% before '" << currentToken.lexeme << "'" << endl;
-        cout << "Syntax error; Expected this %% before '" << currentToken.lexeme << "'" << endl;
-        exit(1);
+        syntaxOutput << "Syntax error; Expected '#' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected '#' before '" << currentToken.lexeme << "'" << endl;
     }
 }
 
@@ -234,15 +224,14 @@ void SA::OptFunctionDefinitions()
     {
         FunctionDefinitions();
     }
-    else if (currentToken.lexeme == "%%")
+    else if (currentToken.lexeme == "#")
     {
         Empty();
     }
     else
     {
-        syntaxOutput << "Syntax error; Expected 'function' or '%%' before '" << currentToken.lexeme << "'" << endl;
-        cout << "Syntax error; Expected 'function' or '%%' before '" << currentToken.lexeme << "'" << endl;
-        exit(1);
+        syntaxOutput << "Syntax error; Expected 'function' or '#' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected 'function' or '#' before '" << currentToken.lexeme << "'" << endl;
     }
 }
 
@@ -263,10 +252,10 @@ void SA::Function()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>" << endl;
+        syntaxOutput << "<Function> ::= function <identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>" << endl;
     }
     GetNextToken();
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         GetNextToken();
         if (currentToken.lexeme == "(")
@@ -308,7 +297,7 @@ void SA::OptParameterList()
         syntaxOutput << "<Opt Parameter List> ::= <Parameter List> | <Empty>" << endl;
         cout << "<Opt Parameter List> ::= <Parameter List> | <Empty>" << endl;
     }
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         ParameterList();
     }
@@ -331,7 +320,7 @@ void SA::ParameterList()
         syntaxOutput << "<Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>" << endl;
         cout << "<Parameter List> ::= <Parameter> | <Parameter> , <Parameter List>" << endl;
     }
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         Parameter();
         if (currentToken.lexeme == ",")
@@ -480,10 +469,10 @@ void SA::IDs()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<IDs> ::= <Identifier> | <Identifier>, <IDs>" << endl;
-        cout << "<IDs> ::= <Identifier> | <Identifier>, <IDs>" << endl;
+        syntaxOutput << "<IDs> ::= <identifier> | <identifier>, <IDs>" << endl;
+        cout << "<IDs> ::= <identifier> | <identifier>, <IDs>" << endl;
     }
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         GetNextToken();
         if (currentToken.lexeme == ",")
@@ -507,7 +496,7 @@ void SA::StatementList()
         syntaxOutput << "<Statement List> ::= <Statement> | <Statement> <Statement List>" << endl;
         cout << "<Statement List> ::= <Statement> | <Statement> <Statement List>" << endl;
     }
-    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "put" || currentToken.lexeme == "get" || currentToken.token == "Identifier" || currentToken.lexeme == "{")
+    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "put" || currentToken.lexeme == "get" || currentToken.token == "identifier" || currentToken.lexeme == "{")
     {
         Statement();
     }
@@ -524,7 +513,7 @@ void SA::Statement()
     {
         Compound();
     }
-    else if (currentToken.token == "Identifier")
+    else if (currentToken.token == "identifier")
     {
         Assign();
     }
@@ -594,10 +583,10 @@ void SA::Assign()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
-        cout << "<Assign> ::= <Identifier> = <Expression> ;" << endl;
+        syntaxOutput << "<Assign> ::= <identifier> = <Expression> ;" << endl;
+        cout << "<Assign> ::= <identifier> = <Expression> ;" << endl;
     }
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         GetNextToken();
         if (currentToken.lexeme == "=")
@@ -804,8 +793,8 @@ void SA::While()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<While> ::= while ( <Condition> ) <Statement>" << endl;
-        cout << "<While> ::= while ( <Condition> ) <Statement>" << endl;
+        syntaxOutput << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
+        cout << "<While> ::= while ( <Condition> ) <Statement> endwhile" << endl;
     }
     GetNextToken();
     if (currentToken.lexeme == "(")
@@ -816,6 +805,16 @@ void SA::While()
         {
             GetNextToken();
             Statement();
+            if (currentToken.lexeme == "endwhile")
+            {
+                GetNextToken();
+            }
+            else
+            {
+                syntaxOutput << "Syntax error; Expected 'endwhile' before '" << currentToken.lexeme << "'" << endl;
+                cout << "Syntax error; Expected 'endwhile' before '" << currentToken.lexeme << "'" << endl;
+                exit(1);
+            }
         }
         else
         {
@@ -848,17 +847,17 @@ void SA::Relop()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
-        cout << "<Relop> ::= == | ^= | > | < | => | =<" << endl;
+        syntaxOutput << "<Relop> ::= == | != | > | < | <= | =>" << endl;
+        cout << "<Relop> ::= == | != | > | < | <= | =>" << endl;
     }
-    if (currentToken.lexeme == "==" || currentToken.lexeme == "^=" || currentToken.lexeme == ">" || currentToken.lexeme == "<" || currentToken.lexeme == "=>" || currentToken.lexeme == "=<")
+    if (currentToken.lexeme == "==" | currentToken.lexeme == "!=" | currentToken.lexeme == ">" | currentToken.lexeme == "<" | currentToken.lexeme == "<=" | currentToken.lexeme == "=>")
     {
         GetNextToken();
     }
     else
     {
-        syntaxOutput << "Syntax error; Expected '==' or '^=' or '>' or '<' or '=>' or '=<' before '" << currentToken.lexeme << "'" << endl;
-        cout << "Syntax error; Expected '==' or '^=' or '>' or '<' or '=>' or '=<' before '" << currentToken.lexeme << "'" << endl;
+        syntaxOutput << "Syntax error; Expected '==' | '!=' | '>' | '<' | '<=' | '=>' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected '==' | '!=' | '>' | '<' | '<=' | '=>' before '" << currentToken.lexeme << "'" << endl;
         exit(1);
     }
 }
@@ -903,10 +902,10 @@ void SA::Primary()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
-        cout << "<Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
+        syntaxOutput << "<Primary> ::= <identifier> | <Integer> | <identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
+        cout << "<Primary> ::= <identifier> | <Integer> | <identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false" << endl;
     }
-    if (currentToken.token == "Identifier")
+    if (currentToken.token == "identifier")
     {
         GetNextToken();
         if (currentToken.lexeme == "(")
@@ -954,8 +953,8 @@ void SA::Primary()
     }
     else
     {
-        syntaxOutput << "Syntax error; Expected 'Identifier' or 'Integer' or 'Identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
-        cout << "Syntax error; Expected 'Identifier' or 'Integer' or 'Identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
+        syntaxOutput << "Syntax error; Expected 'identifier' or 'Integer' or 'identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected 'identifier' or 'Integer' or 'identifier' or '(' or 'Real' or 'true' or 'false' before '" << currentToken.lexeme << "'" << endl;
         exit(1);
     }
 }
