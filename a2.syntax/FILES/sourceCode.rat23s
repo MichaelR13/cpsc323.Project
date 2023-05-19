@@ -1,20 +1,5 @@
-function calculateAverage(nums int) {
-    sum = 0;
-    count = 0;
-    
-    while (count < nums) {
-        get(input);
-        sum = sum + input;
-        count = count + 1;
-    }
-    
-    average = sum / nums;
-    put(average);
+function main()
+{
+    a = b + c;
     return;
-}
-
-function main() {
-    size = 5;
-    calculateAverage(size);
-    return;
-}
+} #

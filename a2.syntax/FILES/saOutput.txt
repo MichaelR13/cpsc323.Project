@@ -1,0 +1,60 @@
+
+Token: identifier          Lexeme: function            
+<Rat23S> ::= <Opt Function Definitions> # <Opt Declaration List> # <Statement List>
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+<Function Definitions> ::= <Function> | <Function> <Function Definitions>
+<Function> ::= function <identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+
+Token: identifier          Lexeme: main                
+
+Token: seperator           Lexeme: (                   
+
+Token: seperator           Lexeme: )                   
+<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Empty> ::= epsilon
+
+Token: seperator           Lexeme: {                   
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty> ::= epsilon
+<Body> ::= { < Statement List> }
+
+Token: identifier          Lexeme: a                   
+<Statement List> ::= <Statement> | <Statement> <Statement List>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan>
+<Assign> ::= <identifier> = <Expression> ;
+
+Token: operator            Lexeme: =                   
+
+Token: identifier          Lexeme: b                   
+<Expression> ::= <Term> <Expression Prime>
+<Term> ::= <Factor> <Term Prime>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <identifier> | <Integer> | <identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+Token: seperator           Lexeme: +                   
+<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>
+<Empty> ::= epsilon
+<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty> 
+
+Token: identifier          Lexeme: c                   
+<Term> ::= <Factor> <Term Prime>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <identifier> | <Integer> | <identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+Token: seperator           Lexeme: ;                   
+<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>
+<Empty> ::= epsilon
+<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty> 
+<Empty> ::= epsilon
+
+Token: identifier          Lexeme: return              
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan>
+<Assign> ::= <identifier> = <Expression> ;
+
+Token: seperator           Lexeme: ;                   
+
+Token: seperator           Lexeme: }                   
+
+Token: seperator           Lexeme: #                   
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+Syntax error; Expected 'int', 'boolean', 'real', or '{' before '#'

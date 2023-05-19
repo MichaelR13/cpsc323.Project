@@ -604,10 +604,14 @@ void SA::Assign()
                 exit(1);
             }
         }
+        else if (currentToken.lexeme == ";")
+        {
+            GetNextToken();
+        }
         else
         {
-            syntaxOutput << "Syntax error; Expected '=' before '" << currentToken.lexeme << "'" << endl;
-            cout << "Syntax error; Expected '=' before '" << currentToken.lexeme << "'" << endl;
+            syntaxOutput << "Syntax error; Expected '=' or ';' before '" << currentToken.lexeme << "'" << endl;
+            cout << "Syntax error; Expected '=' or ';' before '" << currentToken.lexeme << "'" << endl;
             exit(1);
         }
     }
@@ -963,8 +967,8 @@ void SA::Empty()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Empty> ::= ε" << endl;
-        cout << "<Empty> ::= ε" << endl;
+        syntaxOutput << "<Empty> ::= epsilon" << endl;
+        cout << "<Empty> ::= epsilon" << endl;
     }
 }
 
