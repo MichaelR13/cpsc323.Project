@@ -203,8 +203,8 @@ void SA::Rat23S()
         GetNextToken();
         OptDeclarationList();
         StatementList();
-        syntaxOutput << "Syntax Accepted" << endl;
-        cout << "Syntax Accepted" << endl;
+        syntaxOutput << "\nSyntax Accepted" << endl;
+        cout << "\nSyntax Accepted" << endl;
     }
     else
     {
@@ -422,6 +422,11 @@ void SA::OptDeclarationList()
     {
         Empty();
     }
+    else if (currentToken.lexeme == "#")
+    {
+        Empty();
+    }
+
     else
     {
         syntaxOutput << "Syntax error; Expected 'int', 'boolean', 'real', or '{' before '" << currentToken.lexeme << "'" << endl;
@@ -446,6 +451,13 @@ void SA::DeclarationList()
             DeclarationList();
         }
     }
+    else if (currentToken.lexeme != "}")
+    {
+        syntaxOutput << "Syntax error; Expected declaration or '}' after ';', but found '" << currentToken.lexeme << "'" << endl;
+        cout << "Syntax error; Expected declaration or '}' after ';', but found '" << currentToken.lexeme << "'" << endl;
+        exit(1);
+    }
+
     else
     {
         syntaxOutput << "Syntax error; Expected ';' before '" << currentToken.lexeme << "'" << endl;

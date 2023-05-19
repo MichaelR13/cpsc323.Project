@@ -57,4 +57,7 @@ Token: seperator           Lexeme: }
 
 Token: seperator           Lexeme: #                   
 <Opt Declaration List> ::= <Declaration List> | <Empty>
-Syntax error; Expected 'int', 'boolean', 'real', or '{' before '#'
+<Empty> ::= epsilon
+<Statement List> ::= <Statement> | <Statement> <Statement List>
+
+Syntax Accepted
