@@ -23,11 +23,18 @@ R21. <Scan> ::= get ( <IDs> );
 R22. <While> ::= while ( <Condition> ) <Statement> endwhile
 R23. <Condition> ::= <Expression> <Relop> <Expression>
 R24. <Relop> ::= == | != | > | < | <= | => 
-R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>
-R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>
+R25. <Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>    // use new rule below
+R26. <Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>                // use new rule below
 R27. <Factor> ::= - <Primary> | <Primary>
 R28. <Primary> ::= <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false 
 R29. <Empty> ::= <epsilon>
+
+Removed Left Recursion / Backtracking:
+
+R25. <Expression> ::= <Term> <ExpressionPrime>
+R25.1. <ExpressionPrime> ::= + <Term> <ExpressionPrime> | - <Term> <ExpressionPrime> | <Empty>
+R26. <Term> ::= <Factor> <TermPrime>
+R26.1. <TermPrime> ::= * <Factor> <TermPrime> | / <Factor> <TermPrime> | <Empty>
 */
 #ifndef SYNTAXANALYZER_H
 #define SYNTAXANALYZER_H
@@ -99,6 +106,9 @@ void Factor();
 void Primary();
 void Empty();
 void GetNextToken();
+// left recursion / backtracking functions
+void ExpressionPrime();
+void TermPrime();
 };
 
 // function that opens the output file that will store the output of the syntax analyzer
@@ -143,22 +153,18 @@ void printRules()
         <Assign> -> <Identifier> = <Expression> ;
     Token: Operator Lexeme: =
     Token: Identifier Lexeme: b
-        <Expression> -> <Expression> + <Term>
-        <Term> -> <Factor>
-        <Factor> -> <Primary>
-        <Primary> -> <Identifier>
+        <Expression> -> <Term> <ExpressionPrime>
+        <Term> -> <Factor> <TermPrime>
+        <Factor> -> <Identifier>
     Token: Operator Lexeme: +
+        <TermPrime> -> <Empty>
+        <ExpressionPrime> -> + <Term> <ExpressionPrime>
     Token: Identifier Lexeme: c
-        <Term> -> <Factor>
-        <Factor> -> <Primary>
-        <Primary> -> <Identifier>
-    Token: Seperator Lexeme: ;
-        <Term> -> <Factor>
-        <Factor> -> <Primary>
-        <Primary> -> <Identifier>
-        <Statement> -> <Assign>
-        <Assign> -> <Identifier> = <Expression> ;
-        
+        <Term> -> <Factor> <TermPrime>
+        <Factor> -> <Identifier>
+    Token: Separator Lexeme: ;
+        <TermPrime> -> <Empty>
+        <ExpressionPrime> -> <Empty>
     */ 
 }
 
@@ -861,30 +867,22 @@ void SA::Expression()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>" << endl;
-        cout << "<Expression> ::= <Expression> + <Term> | <Expression> - <Term> | <Term>" << endl;
+        syntaxOutput << "<Expression> ::= <Term> <Expression Prime>" << endl;
+        cout << "<Expression> ::= <Term> <Expression Prime>" << endl;
     }
     Term();
-    while (currentToken.lexeme == "+" || currentToken.lexeme == "-")
-    {
-        GetNextToken();
-        Term();
-    }
+    ExpressionPrime();
 }
 
 void SA::Term()
 {
     if (printSwitch)
     {
-        syntaxOutput << "<Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>" << endl;
-        cout << "<Term> ::= <Term> * <Factor> | <Term> / <Factor> | <Factor>" << endl;
+        syntaxOutput << "<Term> ::= <Factor> <Term Prime>" << endl;
+        cout << "<Term> ::= <Factor> <Term Prime>" << endl;
     }
     Factor();
-    while (currentToken.lexeme == "*" || currentToken.lexeme == "/")
-    {
-        GetNextToken();
-        Factor();
-    }
+    TermPrime();
 }
 
 void SA::Factor()
@@ -968,6 +966,44 @@ void SA::Empty()
     {
         syntaxOutput << "<Empty> ::= ε" << endl;
         cout << "<Empty> ::= ε" << endl;
+    }
+}
+
+void SA::ExpressionPrime()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty> " << endl;
+        cout << "<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty> " << endl;
+    }
+    if (currentToken.lexeme == "+" || currentToken.lexeme == "-")
+    {
+        GetNextToken();
+        Term();
+        ExpressionPrime();
+    }
+    else
+    {
+        Empty();
+    }
+}
+
+void SA::TermPrime()
+{
+    if (printSwitch)
+    {
+        syntaxOutput << "<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>" << endl;
+        cout << "<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>" << endl;
+    }
+    if (currentToken.lexeme == "*" || currentToken.lexeme == "/")
+    {
+        GetNextToken();
+        Factor();
+        TermPrime();
+    }
+    else
+    {
+        Empty();
     }
 }
 
